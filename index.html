@@ -1,0 +1,79 @@
+<! DOCTYPE html>
+<html lang=ja>
+    <head>
+        <meta charset="utf-8">
+        <title>testing</title>
+    </head>
+    <body>
+        <div id="css_body">
+
+            <div id="css_gen">
+                <img id="movegen" class='block debug' src="debug.png" draggable="false">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <img id="movegen" class='block event trigger' src="event.png" draggable="false">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>ファイルをアップロードする
+                <input type="file" id="inputfiles">
+                <br>
+                <br>
+                ファイル名:<input type="text" id="setimgtxt">
+                <input type="button" value="画像ブロックを生成する" onclick="namesetimg()">
+                <br>
+                <br>
+                ログに出力する内容<input type="text" id="log">
+                <input type="button" value="logブロックを生成する" onclick="namesettxt()">
+            </div>
+            <div id="work"></div>
+            <div id="display">
+                <input type="button" value="実行する" onclick="run('trigger')">
+            </div>
+        </div>
+        <script type="text/javascript" src="scr.js"></script>
+        <style>
+            body {
+                position: relative;
+                z-index: -1;
+            }
+            img {
+                position: absolute;
+                -webkit-user-drag: none;
+            }
+            #css_body {
+                float: left;
+                width: 100%;
+            }
+            #css_gen {
+                float: left;
+                width: 20%;
+                height: 100vh;
+                outline: solid;
+            }
+            #work {
+                float: left;
+                width: 60%;
+                height: 100vh;
+                outline: solid;
+            }
+            #display {
+                float: left;
+                width: 20%;
+                height: 100vh;
+                outline: solid;
+            }
+        </style>
+    </body>
+</html>
