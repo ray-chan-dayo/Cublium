@@ -13,11 +13,11 @@ move.id= "move";
 const grop = document.createElement('div');
 /*
 
-CCCC C    CCCC C  C CCCC
-C    C    C  C CC C C
-C    C    C  C C CC CCC
-C    C    C  C C  C C
-CCCC CCCC CCCC C  C CCCC
+CCCC L    OOOO N  N EEEE
+C    L    O  O NN N E
+C    L    O  O N NN EEE
+C    L    O  O N  N E
+CCCC LLLL OOOO N  N EEEE
 
 */
 var set = function set() {
