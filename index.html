@@ -16,6 +16,7 @@
                 <br>
                 <br>
                 <br>
+                <div id="movegen" class='block debug' src="debug.png" draggable="false">test</div>
                 <br>
                 <br>
                 <br>
@@ -46,29 +47,38 @@
         <style>
             body {
                 position: relative;
+                user-select: none;
                 z-index: -1;
             }
             img {
                 position: absolute;
                 -webkit-user-drag: none;
             }
+            div {
+                position: absolute;
+                -webkit-user-drag: none;
+            }
             #css_body {
+                position: relative;
                 float: left;
                 width: 100%;
             }
             #css_gen {
+                position: relative;
                 float: left;
                 width: 20%;
                 height: 100vh;
                 outline: solid;
             }
             #work {
+                position: relative;
                 float: left;
                 width: 60%;
                 height: 100vh;
                 outline: solid;
             }
             #display {
+                position: relative;
                 float: left;
                 width: 20%;
                 height: 100vh;
