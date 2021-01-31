@@ -8,8 +8,6 @@ var clicking;
 var using;
 var over = null;
 var drag = null;
-const move = document.createElement('img');
-move.id= "move";
 const grop = document.createElement('div');
 /*
 
@@ -20,13 +18,14 @@ C    L    O  O N  N E
 CCCC LLLL OOOO N  N EEEE
 
 */
+/*
 var set = function set() {
     let smove = document.createElement('img');
     //<event>
     smove.addEventListener('mouseenter', function (event) {
-        /*console.log ("over");
-        console.log (event.target);
-        console.log (event.target.classList);*/
+        //console.log ("over");
+        //console.log (event.target);
+        //console.log (event.target.classList);
         if (event.target.classList.contains('block')) {
             if (!drag.classList.contains('event')) {
                 using = true;
@@ -72,28 +71,55 @@ var set = function set() {
         over.parentElement.appendChild(smove);
     };
     dragclass = [];
+};*/
+var mouseenterfunction = function(event) {
+    if (event.target.classList.contains('block') && !drag.classList.contains('event')) {
+        using = true;
+        over = this;
+        drag.style.left = event.target.offsetLeft + "px";
+        drag.style.top = event.target.offsetTop + 100 + "px";
+    };
+}
+var set = function set() {
+    var movesetdom = drag.cloneNode(true);
+    movesetdom.addEventListener('mouseenter', mouseenterfunction);
+    movesetdom.addEventListener('mouseleave', function mouseleavefunction() {
+        using = false;
+        over = null;
+    });
+    movesetdom.alt = 'move';
+    movesetdom.id = 'put'
+    movesetdom.classList.add('block');
+    if (!using) {
+        let emove = document.createElement('div');
+        emove.classList = movesetdom.classList;
+        emove.classList.remove('block');
+        emove.classList.remove('event');
+        emove.appendChild(movesetdom);
+        work.appendChild(emove);
+    }else {
+        over.parentElement.appendChild(movesetdom);
+    };
+    dragclass = [];
 };
+
+
+
 document.onmousedown = function(event) {
     run('trigger_mousedown');
 
     using = false;
     if (event.target.classList.contains('block')) {
-        move.src = event.target.src;
-        move.alt = event.target.alt;
-        move.name = event.target.name;
-        var moveclass = Array.prototype.slice.call(event.target.classList);
-        moveclass.forEach(movec => {
-            if (movec != 'block') {
-                move.classList.add(movec);
-            };
-        });
-        moveclass = [];
-        work.appendChild(move);
+        var movecopydom = event.target.cloneNode(true);
+        if (movecopydom.removeEventListener('mouseenter', mouseenterfunction)) {
+            movecopydom.removeEventListener('mouseleave', mouseleavefunction)
+        };
+        movecopydom.classList.remove('block');
+        movecopydom.id = 'move';
+        work.appendChild(movecopydom);
         drag = document.getElementById("move");
         x = event.pageX - event.target.offsetLeft;
         y = event.pageY - event.target.offsetTop;
-        drag.style.left = event.pageX;
-        drag.style.top = event.pageY;
         clicking = true;
         drag.style.zIndex = -1;
         if (event.target.id != 'movegen'){
@@ -101,6 +127,9 @@ document.onmousedown = function(event) {
         };
     };
 };
+
+
+
 document.onmousemove = function (event){
     run('trigger_mousemove');
 	if (clicking == true) {
@@ -111,6 +140,9 @@ document.onmousemove = function (event){
         };
     };
 };
+
+
+
 //
 document.onmouseup = function () {
     if (clicking == true) {
