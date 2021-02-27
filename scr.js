@@ -199,7 +199,12 @@ var run = function run(trigger) {
                     display.appendChild(effect_setimg_element);
                 };
                 if (run_triggered_child.classList.contains('log')) {
-                    console.log(run_triggered_child.name);
+                    console.log(run_triggered_child.name); 
+                };
+                if (run_triggered_child.classList.contains('editablelog')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
+                    console.log(inside_editablelog.value); 
+                    });
                 };
             });
         };
