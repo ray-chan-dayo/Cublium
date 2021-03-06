@@ -159,6 +159,7 @@ document.onmouseup = function () {
     drag.remove();
     over = null;
 };
+/*
 var testrun = function testrun() {
     var runner = Array.prototype.slice.call(document.getElementsByClassName('testtrigger'));
     console.log (runner);
@@ -184,6 +185,36 @@ var testrun = function testrun() {
         };
     });
 };
+*/
+
+var gencode = function gencode(trigger) {
+    var run_triggered_array = Array.prototype.slice.call(document.getElementsByClassName(trigger));
+    run_triggered_array.forEach(run_triggered => {
+        if (run_triggered.nodeName == 'DIV') {
+            var run_triggered_child_array = Array.prototype.slice.call(run_triggered.children);
+            run_triggered_child_array.forEach(run_triggered_child => {
+                if (run_triggered_child.classList.contains('debug')) {
+                    console.log("console.log('hello');");
+                };
+                if (run_triggered_child.classList.contains('setimg')) {
+                    var effect_setimg_element = document.createElement('img');
+                    effect_setimg_element.src = run_triggered_child.name;
+                    display.appendChild(effect_setimg_element);
+                };
+                if (run_triggered_child.classList.contains('log')) {
+                    console.log("console.log('" + run_triggered_child.name + "');");
+                };
+                if (run_triggered_child.classList.contains('editablelog')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
+                        if (inside_editablelog.classList.contains('content'))
+                    console.log("console.log('" + inside_editablelog.value + "');"); 
+                    });
+                };
+            });
+        };
+    });
+};
+
 var run = function run(trigger) {
     var run_triggered_array = Array.prototype.slice.call(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
@@ -198,9 +229,11 @@ var run = function run(trigger) {
                     effect_setimg_element.src = run_triggered_child.name;
                     display.appendChild(effect_setimg_element);
                 };
+                /*
                 if (run_triggered_child.classList.contains('log')) {
                     console.log(run_triggered_child.name); 
                 };
+                */
                 if (run_triggered_child.classList.contains('editablelog')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
                     console.log(inside_editablelog.value); 
@@ -235,6 +268,7 @@ var namesetimg = function namesetimg() {
     namesetimg_element.name = document.getElementById("setimgtxt").value;
     work.appendChild(namesetimg_element);
 };
+/*
 var log_element = document.createElement('img');
 log_element.src = "log.png";
 log_element.classList.add('block');
@@ -243,3 +277,4 @@ var namesettxt = function namesettxt() {
     log_element.name = document.getElementById("log").value;
     work.appendChild(log_element);
 };
+*/
