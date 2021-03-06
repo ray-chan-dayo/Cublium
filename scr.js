@@ -201,9 +201,11 @@ var gencode = function gencode(trigger) {
                     effect_setimg_element.src = run_triggered_child.name;
                     display.appendChild(effect_setimg_element);
                 };
+                /*
                 if (run_triggered_child.classList.contains('log')) {
                     console.log("console.log('" + run_triggered_child.name + "');");
                 };
+                */
                 if (run_triggered_child.classList.contains('editablelog')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
                         if (inside_editablelog.classList.contains('content'))
