@@ -2,6 +2,21 @@
 //画像を複製し移動できるようにするコードです
 //HTML:id=movegenの要素(なんでもok)
 //    <div id=work></div>
+
+/*CONFIG
+
+CCCC OOOO N  N FFFF III GGGG
+C    O  O NN N F     I  G
+C    O  O N NN FFF   I  G BG
+C    O  O N  N F     I  G  G
+CCCC OOOO N  N F    III GGGG
+
+*/
+var block_height = 100;
+
+
+
+
 var x;
 var y;
 var clicking;
@@ -79,9 +94,9 @@ var mouseenterfunction = function(event) {
         using = true;
         over = this;
         drag.style.left = event.target.offsetLeft + "px";
-        drag.style.top = event.target.offsetTop + 100 + "px";
+        drag.style.top = event.target.offsetTop + block_height + "px";
     };
-}
+};
 var set = function set() {
     var movesetdom = drag.cloneNode(true);
     movesetdom.addEventListener('mouseenter', mouseenterfunction);
@@ -112,6 +127,23 @@ document.onmousedown = function(event) {
 
     using = false;
     if (event.target.classList.contains('block')) {
+        var movecopydom = event.target.cloneNode(true);
+        if (movecopydom.removeEventListener('mouseenter', mouseenterfunction)) {
+            movecopydom.removeEventListener('mouseleave', mouseleavefunction)
+        };
+        movecopydom.classList.remove('block');
+        movecopydom.id = 'move';
+        work.appendChild(movecopydom);
+        drag = document.getElementById("move");
+        x = event.pageX - event.target.offsetLeft;
+        y = event.pageY - event.target.offsetTop;
+        clicking = true;
+        drag.style.zIndex = -1;
+        if (event.target.id != 'movegen'){
+            event.target.remove();
+        };
+    };
+    if (event.target.classList.contains('lium')) {
         var movecopydom = event.target.cloneNode(true);
         if (movecopydom.removeEventListener('mouseenter', mouseenterfunction)) {
             movecopydom.removeEventListener('mouseleave', mouseleavefunction)
