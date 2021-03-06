@@ -9,6 +9,8 @@ var using;
 var over = null;
 var drag = null;
 const grop = document.createElement('div');
+var set_var
+var set_content
 /*
 
 CCCC L    OOOO N  N EEEE
@@ -193,9 +195,11 @@ var gencode = function gencode(trigger) {
         if (run_triggered.nodeName == 'DIV') {
             var run_triggered_child_array = Array.prototype.slice.call(run_triggered.children);
             run_triggered_child_array.forEach(run_triggered_child => {
+                /*
                 if (run_triggered_child.classList.contains('debug')) {
                     console.log("console.log('hello');");
                 };
+                */
                 if (run_triggered_child.classList.contains('setimg')) {
                     var effect_setimg_element = document.createElement('img');
                     effect_setimg_element.src = run_triggered_child.name;
@@ -211,6 +215,17 @@ var gencode = function gencode(trigger) {
                         if (inside_editablelog.classList.contains('content'))
                     console.log("console.log('" + inside_editablelog.value + "');"); 
                     });
+                };
+                if (run_triggered_child.classList.contains('set')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                        if (inside_set.classList.contains('var')) {
+                            set_var = inside_set.value;
+                        };
+                        if (inside_set.classList.contains('contents')) {
+                            set_content = inside_set.value;
+                        };
+                    });
+                    console.log(set_var + "=" + set_content + ";");
                 };
             });
         };
@@ -238,8 +253,21 @@ var run = function run(trigger) {
                 */
                 if (run_triggered_child.classList.contains('editablelog')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
-                    console.log(inside_editablelog.value); 
+                        console.log(inside_editablelog.value); 
                     });
+                };
+                if (run_triggered_child.classList.contains('set')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                        if (inside_set.classList.contains('var')) {
+                            set_var = inside_set.value;
+                            console.log(set_var);
+                        };
+                        if (inside_set.classList.contains('content')) {
+                            set_content = inside_set.value;
+                            console.log(set_content);
+                        };
+                    });
+                    eval (set_var + "='" + set_content + "';");
                 };
             });
         };

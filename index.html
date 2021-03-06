@@ -8,7 +8,8 @@
         <div id="css_body">
 
             <div id="css_gen">
-                <img id="movegen" class='block debug' src="debug.png" draggable="false">
+                <!--<img id="movegen" class='block debug' src="debug.png" draggable="false">-->
+                <div id="movegen" class='block set' draggable="false">変数<input type="text" class="var">に<input type="text" class="content">を代入する</div>
                 <br>
                 <br>
                 <br>
@@ -16,7 +17,7 @@
                 <br>
                 <br>
                 <br>
-                <div id="movegen" class='block editablelog' src="debug.png" draggable="false">test<input type="text" class="content">test</div>
+                <div id="movegen" class='block editablelog' draggable="false">ログに<input type="text" class="content">と出力する</div>
                 <br>
                 <br>
                 <br>
@@ -33,9 +34,9 @@
                 <br>
                 ファイル名:<input type="text" id="setimgtxt">
                 <input type="button" value="画像ブロックを生成する" onclick="namesetimg()">
+                <!--<br>
                 <br>
-                <br>
-                <!--ログに出力する内容<input type="text" id="log">
+                ログに出力する内容<input type="text" id="log">
                 <input type="button" value="logブロックを生成する" onclick="namesettxt()">-->
             </div>
             <div id="work"></div>
@@ -86,6 +87,7 @@
             }
             .editablelog {
                 display:flex;
+                white-space:nowrap;
             }
         </style>
     </body>
