@@ -90,8 +90,14 @@ var set = function set() {
     dragclass = [];
 };*/
 var mouseenterfunction = function(event) {
-    if (event.target.classList.contains('block') && !drag.classList.contains('event')) {
+    if (event.target.classList.contains('block') && !drag.classList.contains('event') && clicking) {
         using = true;
+        over = this;
+        drag.style.left = event.target.offsetLeft + "px";
+        drag.style.top = event.target.offsetTop + block_height + "px";
+    };
+    if (event.target.classList.contains('insertable') && !drag.classList.contains('event') && liumclicking) {
+        liumusing = true;
         over = this;
         drag.style.left = event.target.offsetLeft + "px";
         drag.style.top = event.target.offsetTop + block_height + "px";
@@ -107,15 +113,15 @@ var set = function set() {
     movesetdom.alt = 'move';
     movesetdom.id = 'put'
     movesetdom.classList.add('block');
-    if (!using) {
+    if (using) {
+        over.parentElement.appendChild(movesetdom);
+    }else {
         let emove = document.createElement('div');
         emove.classList = movesetdom.classList;
         emove.classList.remove('block');
         emove.classList.remove('event');
         emove.appendChild(movesetdom);
         work.appendChild(emove);
-    }else {
-        over.parentElement.appendChild(movesetdom);
     };
     dragclass = [];
 };
@@ -154,7 +160,7 @@ document.onmousedown = function(event) {
         drag = document.getElementById("move");
         x = event.pageX - event.target.offsetLeft;
         y = event.pageY - event.target.offsetTop;
-        clicking = true;
+        liumclicking = true;
         drag.style.zIndex = -1;
         if (event.target.id != 'movegen'){
             event.target.remove();
@@ -292,11 +298,9 @@ var run = function run(trigger) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('var')) {
                             set_var = inside_set.value;
-                            console.log(set_var);
                         };
                         if (inside_set.classList.contains('content')) {
                             set_content = inside_set.value;
-                            console.log(set_content);
                         };
                     });
                     eval (set_var + "='" + set_content + "';");
