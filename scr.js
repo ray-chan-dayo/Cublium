@@ -336,17 +336,6 @@ var run = function run(trigger) {
                     });
                     eval (set_parent + '.appendchild(' + set_child + ');');
                 };
-                if (run_triggered_child.classList.contains('appendchild')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('parent')) {
-                            set_parent = inside_set.value;
-                        };
-                        if (inside_set.classList.contains('child')) {
-                            set_child = inside_set.value;
-                        };
-                    });
-                    eval (set_parent + '.appendchild(' + set_child + ');');
-                };
                 if (run_triggered_child.classList.contains('eval')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
                         eval(inside_editablelog.value);
