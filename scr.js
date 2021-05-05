@@ -7,12 +7,12 @@
 
 CCCC OOOO N  N FFFF III GGGG
 C    O  O NN N F     I  G
-C    O  O N NN FFF   I  G BG
+C    O  O N NN FFF   I  G GG
 C    O  O N  N F     I  G  G
 CCCC OOOO N  N F    III GGGG
 
 */
-var block_height = 100;
+var block_height = 32;
 
 
 
@@ -103,28 +103,6 @@ var mouseenterfunction = function(event) {
         drag.style.top = event.target.offsetTop + block_height + "px";
     };
 };
-var set = function set() {
-    var movesetdom = drag.cloneNode(true);
-    movesetdom.addEventListener('mouseenter', mouseenterfunction);
-    movesetdom.addEventListener('mouseleave', function mouseleavefunction() {
-        using = false;
-        over = null;
-    });
-    movesetdom.alt = 'move';
-    movesetdom.id = 'put'
-    movesetdom.classList.add('block');
-    if (using) {
-        over.parentElement.appendChild(movesetdom);
-    }else {
-        let emove = document.createElement('div');
-        emove.classList = movesetdom.classList;
-        emove.classList.remove('block');
-        emove.classList.remove('event');
-        emove.appendChild(movesetdom);
-        work.appendChild(emove);
-    };
-    dragclass = [];
-};
 
 
 
@@ -198,6 +176,28 @@ document.onmouseup = function () {
     clicking = false;
     drag.remove();
     over = null;
+};
+var set = function set() {
+    var movesetdom = drag.cloneNode(true);
+    movesetdom.addEventListener('mouseenter', mouseenterfunction);
+    movesetdom.addEventListener('mouseleave', function mouseleavefunction() {
+        using = false;
+        over = null;
+    });
+    movesetdom.alt = 'move';
+    movesetdom.id = 'put'
+    movesetdom.classList.add('block');
+    if (using) {
+        over.parentElement.appendChild(movesetdom);
+    }else {
+        let emove = document.createElement('div');
+        emove.classList = movesetdom.classList;
+        emove.classList.remove('block');
+        emove.classList.remove('event');
+        emove.appendChild(movesetdom);
+        work.appendChild(emove);
+    };
+    dragclass = [];
 };
 /*
 var testrun = function testrun() {
@@ -308,22 +308,17 @@ var run = function run(trigger) {
                 //no in HTML
                 if (run_triggered_child.classList.contains('classlist')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('element')) {
-                            set_element = inside_set.value;
+                        if (inside_set.classList.contains('mother')) {
+                            set_mother = inside_set.value;
                         };
                         if (inside_set.classList.contains('operation')) {
-                            if (inside_set.value == "追加") {
                                 set_operation = inside_set.value;
-                            };
-                            if (inside_set.value == "削除") {
-                                set_operation = inside_set.value;
-                            };
                         };
                         if (inside_set.classList.contains('content')) {
                             set_content = inside_set.value;
                         };
+                    eval (set_mother + '.' + set_operation + '(' + set_content + ');');
                     });
-                    eval (set_element + '.classList.' + set_operation + '(' + set_content + ');');
                 };
                 if (run_triggered_child.classList.contains('appendchild')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
@@ -336,6 +331,7 @@ var run = function run(trigger) {
                     });
                     eval (set_parent + '.appendchild(' + set_child + ');');
                 };
+
                 if (run_triggered_child.classList.contains('eval')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
                         eval(inside_editablelog.value);

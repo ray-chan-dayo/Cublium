@@ -12,26 +12,26 @@
                 <div id="movegen" class='block set' draggable="false">変数<input type="text" class="insertable var">に<input type="text" class="insertable content">を代入する</div>
                 <br>
                 <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
                 <div id="movegen" class='block editablelog' draggable="false">ログに<input type="text" class="insertable content">と出力する</div>
                 <br>
                 <br>
+                <div id="movegen" class='block event trigger' draggable="false">実行した時</div>
                 <br>
                 <br>
-                <img id="movegen" class='block event trigger' src="event.png" draggable="false">
-                <br>
-                <br>
-                <br>
+                <div id="movegen" class='block classlist' draggable="false">
+                    <input type="text" class="insertable mother">
+                    から
+                    <input type="text" class="insertable content">
+                    を
+                    <select name="blood">
+                    <option value="add">追加</option>
+                    <option value="remove">削除</option>
+                    </select>
+                    する
+                </div>
                 <br>
                 <br>
                 <div id="movegen" class='lium editablelog' draggable="false">変数<input type="text" class="var"></div>
-                <br>
-                <br>
-                <br>
                 <br>
                 <br>
                 <br>ファイルをアップロードする
@@ -94,6 +94,7 @@
             .block {
                 display:flex;
                 white-space:nowrap;
+                background-color: orange;
             }
             .insertable {
                 width: 20px;
