@@ -1,7 +1,3 @@
-//javascriptです
-//画像を複製し移動できるようにするコードです
-//HTML:id=movegenの要素(なんでもok)
-//    <div id=work></div>
 
 /*CONFIG
 
