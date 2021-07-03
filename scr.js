@@ -291,35 +291,35 @@ var run = function run(trigger) {
                 */
                 if (run_triggered_child.classList.contains('editablelog')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
-                        console.log(inside_editablelog.value); 
+                        console.log(inside_editablelog.textContent); 
                     });
                 };
                 if (run_triggered_child.classList.contains('set')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('var')) {
-                            set_var = inside_set.value;
+                            set_var = inside_set.textContent;
                         };
                         if (inside_set.classList.contains('content')) {
-                            set_content = inside_set.value;
+                            set_content = inside_set.textContent;
                         };
                     });
                     eval (set_var + "='" + set_content + "';");
                 };
-                //no in HTML
                 if (run_triggered_child.classList.contains('classlist')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('mother')) {
-                            set_mother = inside_set.value;
+                            set_mother = inside_set.textContent;
                         };
                         if (inside_set.classList.contains('operation')) {
                                 set_operation = inside_set.value;
                         };
                         if (inside_set.classList.contains('content')) {
-                            set_content = inside_set.value;
+                            set_content = inside_set.textContent;
                         };
                     eval (set_mother + '.' + set_operation + '(' + set_content + ');');
                     });
                 };
+                //no in HTML
                 if (run_triggered_child.classList.contains('appendchild')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('parent')) {

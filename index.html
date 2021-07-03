@@ -9,21 +9,27 @@
 
             <div id="css_gen">
                 <!--<img id="movegen" class='block debug' src="debug.png" draggable="false">-->
-                <div id="movegen" class='block set' draggable="false">変数<input type="text" class="insertable var">に<input type="text" class="insertable content">を代入する</div>
+                <div id="movegen" class='block set' draggable="false">
+                    変数<div class="insertable var" contenteditable="true">foo</div>に<div class="insertable content" contenteditable="true">Hello, world!</div>を代入する
+                </div>
                 <br>
                 <br>
-                <div id="movegen" class='block editablelog' draggable="false">ログに<input type="text" class="insertable content">と出力する</div>
+                <div id="movegen" class='block editablelog' draggable="false">
+                    ログに<div class="insertable content" contenteditable="true">Hello, world!</div>と出力する
+                </div>
                 <br>
                 <br>
                 <div id="movegen" class='block event trigger' draggable="false">実行した時</div>
                 <br>
                 <br>
                 <div id="movegen" class='block classlist' draggable="false">
-                    <input type="text" class="insertable mother">から<input type="text" class="insertable content">を<select name="blood"><option value="add">追加</option><option value="remove">削除</option></select>する
+                    <div class="insertable mother" contenteditable="true">foo</div>に<div class="insertable content" contenteditable="true">1</div>を<select name="blood"><option value="add">追加</option><option value="remove">削除</option></select>する
                 </div>
                 <br>
                 <br>
-                <div id="movegen" class='lium editablelog' draggable="false">変数<input type="text" class="var"></div>
+                <div id="movegen" class='lium editablelog' draggable="false">
+                    変数<input type="text" class="var">
+                </div>
                 <br>
                 <br>
                 <br>ファイルをアップロードする
@@ -57,6 +63,9 @@
                 position: absolute;
                 -webkit-user-drag: none;
             }
+            div.insertable {
+                position: relative;
+            }
             #css_body {
                 position: relative;
                 float: left;
@@ -65,14 +74,14 @@
             #css_gen {
                 position: relative;
                 float: left;
-                width: 20%;
+                width: 30%;
                 height: 100vh;
                 outline: solid;
             }
             #work {
                 position: relative;
                 float: left;
-                width: 60%;
+                width: 50%;
                 height: 100vh;
                 outline: solid;
             }
@@ -89,8 +98,8 @@
                 background-color: orange;
             }
             .insertable {
-                width: 20px;
                 min-width: 20px;
+                background-color: yellow;
             }
         </style>
     </body>
