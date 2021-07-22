@@ -22,6 +22,12 @@
                 <div id="movegen" class='block event trigger' draggable="false">実行した時</div>
                 <br>
                 <br>
+                <div id="movegen" class='block event trigger_mousedown' draggable="false">クリックしたとき</div>
+                <br>
+                <br>
+                <div id="movegen" class='block event trigger_mousemove' draggable="false">マウスが動いたとき</div>
+                <br>
+                <br>
                 <div id="movegen" class='block classlist' draggable="false">
                     <div class="insertable mother" contenteditable="true">foo</div>に<div class="insertable content" contenteditable="true">1</div>を<select name="blood"><option value="add">追加</option><option value="remove">削除</option></select>する
                 </div>
@@ -32,8 +38,14 @@
                 </div>
                 <br>
                 <br>
+                <div id="movegen" class='block event trigger_Space' draggable="false"><input type="button" value="Space" onclick="kydytecto(this)">が押されたら</div>
+                <br>
+                <br>
                 <br>ファイルをアップロードする
                 <input type="file" id="inputfiles">
+                <br>
+                <br>
+                <div id="movegen" class='block eval' draggable="false"><div class="insertable content" contenteditable="true">console.log("Hello, world!")</div>を実行する</div>
                 <br>
                 <br>
                 ファイル名:<input type="text" id="setimgtxt">

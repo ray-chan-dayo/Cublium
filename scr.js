@@ -319,6 +319,13 @@ var run = function run(trigger) {
                     eval (set_mother + '.' + set_operation + '(' + set_content + ');');
                     });
                 };
+                if (run_triggered_child.classList.contains('eval')) {
+                    //console.log("aaa")
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_eval => {
+                        //console.log(inside_eval)
+                        eval(inside_eval.textContent);
+                    });
+                };
                 //no in HTML
                 if (run_triggered_child.classList.contains('appendchild')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
@@ -332,11 +339,6 @@ var run = function run(trigger) {
                     eval (set_parent + '.appendchild(' + set_child + ');');
                 };
 
-                if (run_triggered_child.classList.contains('eval')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
-                        eval(inside_editablelog.value);
-                    });
-                };
                 if (run_triggered_child.classList.contains('custom')) {
                     eval(run_triggered_child.name);
                 };
@@ -344,6 +346,28 @@ var run = function run(trigger) {
         };
     });
 };
+
+var kydytecto = function kydytecto(dom) {
+    document.addEventListener('keydown', logKey);
+    console.log(dom.value);
+    var kydytecto_class = "trigger_" + dom.value;
+    console.log(kydytecto_class);
+    eval("dom.parentNode.classList.remove('"+kydytecto_class+"');");
+    eval("dom.parentNode.parentNode.classList.remove('"+kydytecto_class+"');");
+    function logKey(event) {
+        console.log(event.code);
+        dom.value = event.code;
+        document.removeEventListener('keydown', logKey);
+        var kydytecto_class = "trigger_" + event.code;
+        eval("dom.parentNode.classList.add('"+kydytecto_class+"');");
+        eval("dom.parentNode.parentNode.classList.add('"+kydytecto_class+"');");
+    }
+}
+
+document.onkeydown = function kyples(event) {
+    eval("run('trigger_"+event.code+"')");
+}
+
 var inputFile = document.getElementById('inputfiles');
 inputFile.addEventListener("change", function(event) {
     if (event.target.file.type == 'javascript') {
