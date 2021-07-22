@@ -363,7 +363,7 @@ var kydytecto = function kydytecto(dom) {
 document.onkeydown = function kyples(event) {
     eval("run('trigger_"+event.code+"')");
 }
-/*
+
 var inputFile = document.getElementById('inputfiles');
 inputFile.addEventListener("change", function(event) {
     if (event.target.file.type == 'javascript') {
