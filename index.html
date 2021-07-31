@@ -8,34 +8,52 @@
         <div id="css_body">
 
             <div id="css_gen">
-                <img id="movegen" class='block debug' src="debug.png" draggable="false">
+                <!--<img id="movegen" class='block debug' src="debug.png" draggable="false">-->
+                <div id="movegen" class='block set' draggable="false">
+                    変数<div class="insertable var" contenteditable="true">foo</div>に<div class="insertable content" contenteditable="true">Hello, world!</div>を代入する
+                </div>
                 <br>
                 <br>
+                <div id="movegen" class='block editablelog' draggable="false">
+                    ログに<div class="insertable content" contenteditable="true">Hello, world!</div>と出力する
+                </div>
                 <br>
                 <br>
+                <div id="movegen" class='block event trigger' draggable="false">実行した時</div>
                 <br>
                 <br>
+                <div id="movegen" class='block event trigger_mousedown' draggable="false">クリックしたとき</div>
                 <br>
                 <br>
+                <div id="movegen" class='block event trigger_mousemove' draggable="false">マウスが動いたとき</div>
                 <br>
                 <br>
+                <div id="movegen" class='block classlist' draggable="false">
+                    <div class="insertable mother" contenteditable="true">foo</div>に<div class="insertable content" contenteditable="true">1</div>を<select name="blood"><option value="add">追加</option><option value="remove">削除</option></select>する
+                </div>
                 <br>
-                <img id="movegen" class='block event trigger' src="event.png" draggable="false">
+                <br>
+                <div id="movegen" class='lium editablelog' draggable="false">
+                    変数<input type="text" class="var">
+                </div>
                 <br>
                 <br>
-                <br>
+                <div id="movegen" class='block event trigger_Space' draggable="false"><input type="button" value="Space" onclick="kydytecto(this)">が押されたら</div>
                 <br>
                 <br>
                 <br>ファイルをアップロードする
                 <input type="file" id="inputfiles">
                 <br>
                 <br>
+                <div id="movegen" class='block eval' draggable="false"><div class="insertable content" contenteditable="true">console.log("Hello, world!")</div>を実行する</div>
+                <br>
+                <br>
                 ファイル名:<input type="text" id="setimgtxt">
                 <input type="button" value="画像ブロックを生成する" onclick="namesetimg()">
-                <br>
+                <!--<br>
                 <br>
                 ログに出力する内容<input type="text" id="log">
-                <input type="button" value="logブロックを生成する" onclick="namesettxt()">
+                <input type="button" value="logブロックを生成する" onclick="namesettxt()">-->
             </div>
             <div id="work"></div>
             <div id="display">
@@ -46,33 +64,54 @@
         <style>
             body {
                 position: relative;
+                user-select: none;
                 z-index: -1;
             }
             img {
                 position: absolute;
                 -webkit-user-drag: none;
             }
+            div {
+                position: absolute;
+                -webkit-user-drag: none;
+            }
+            div.insertable {
+                position: relative;
+            }
             #css_body {
+                position: relative;
                 float: left;
                 width: 100%;
             }
             #css_gen {
+                position: relative;
                 float: left;
-                width: 20%;
+                width: 30%;
                 height: 100vh;
                 outline: solid;
             }
             #work {
+                position: relative;
                 float: left;
-                width: 60%;
+                width: 50%;
                 height: 100vh;
                 outline: solid;
             }
             #display {
+                position: relative;
                 float: left;
                 width: 20%;
                 height: 100vh;
                 outline: solid;
+            }
+            .block {
+                display:flex;
+                white-space:nowrap;
+                background-color: orange;
+            }
+            .insertable {
+                min-width: 20px;
+                background-color: yellow;
             }
         </style>
     </body>

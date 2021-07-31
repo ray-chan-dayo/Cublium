@@ -15,3 +15,5 @@ This Agreement is made in Japanese and translated into English. The Japanese tex
 
 IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 いかなる場合においても作者は責任を負いません
+
+Copyright holder can change this license at anytime without any notice. Please check latest license everytime you use this.
