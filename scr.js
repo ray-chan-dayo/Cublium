@@ -120,7 +120,12 @@ document.onmousedown = function(event) {
         clicking = true;
         drag.style.zIndex = -1;
         if (event.target.id != 'movegen'){
-            event.target.remove();
+		var ray_cub_clone_parent=event.target.parentnode;
+		event.target.remove()
+		if (ray_cub_clone_parent.children.length==1) {
+		work.appendchild(ray_cub_clone_parent.children);
+		ray_cub_clone_parent.remove();
+		};
         };
     };
     if (event.target.classList.contains('lium')) {
@@ -404,4 +409,3 @@ var namesettxt = function namesettxt() {
     log_element.name = document.getElementById("log").value;
     work.appendChild(log_element);
 };
-*/
