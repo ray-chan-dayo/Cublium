@@ -9,43 +9,52 @@
 
             <div id="css_gen">
                 <!--<img id="movegen" class='block debug' src="debug.png" draggable="false">-->
-                <div id="movegen" class='block set' draggable="false">
+                <div id="movegen" class='block set css_block' draggable="false">
                     変数<div class="insertable var" contenteditable="true">foo</div>に<div class="insertable content" contenteditable="true">Hello, world!</div>を代入する
                 </div>
                 <br>
                 <br>
-                <div id="movegen" class='block editablelog' draggable="false">
+                <div id="movegen" class='block editablelog css_block' draggable="false">
                     ログに<div class="insertable content" contenteditable="true">Hello, world!</div>と出力する
                 </div>
                 <br>
                 <br>
-                <div id="movegen" class='block event trigger' draggable="false">実行した時</div>
+                <div id="movegen" class='block alert css_block' draggable="false">
+                    アラートに<div class="insertable content" contenteditable="true">Hello, world!</div>を表示する
+                </div>
                 <br>
                 <br>
-                <div id="movegen" class='block event trigger_mousedown' draggable="false">クリックしたとき</div>
+                <div id="movegen" class='block event trigger css_block' draggable="false">実行した時</div>
                 <br>
                 <br>
-                <div id="movegen" class='block event trigger_mousemove' draggable="false">マウスが動いたとき</div>
+                <div id="movegen" class='block event trigger_mousedown css_block' draggable="false">クリックしたとき</div>
                 <br>
                 <br>
-                <div id="movegen" class='block classlist' draggable="false">
+                <div id="movegen" class='block event trigger_mousemove css_block' draggable="false">マウスが動いたとき</div>
+                <br>
+                <br>
+                <div id="movegen" class='block classlist css_block' draggable="false">
                     <div class="insertable mother" contenteditable="true">foo</div>に<div class="insertable content" contenteditable="true">1</div>を<select name="blood"><option value="add">追加</option><option value="remove">削除</option></select>する
                 </div>
                 <br>
                 <br>
-                <div id="movegen" class='lium editablelog' draggable="false">
+                <div id="movegen" class='lium editablelog css_block' draggable="false">
                     変数<input type="text" class="var">
                 </div>
                 <br>
                 <br>
-                <div id="movegen" class='block event trigger_Space' draggable="false"><input type="button" value="Space" onclick="kydytecto(this)">が押されたら</div>
+                <div id="movegen" class='block event trigger_Space css_block' draggable="false">
+                    <input type="button" value="Space" onclick="kydytecto(this)">が押されたら
+                </div>
                 <br>
                 <br>
                 <br>ファイルをアップロードする
                 <input type="file" id="inputfiles">
                 <br>
                 <br>
-                <div id="movegen" class='block eval' draggable="false"><div class="insertable content" contenteditable="true">console.log("Hello, world!")</div>を実行する</div>
+                <div id="movegen" class='block eval css_block' draggable="false">
+                    <div class="insertable content" contenteditable="true">console.log("Hello, world!")</div>を実行する
+                </div>
                 <br>
                 <br>
                 ファイル名:<input type="text" id="setimgtxt">
@@ -104,7 +113,7 @@
                 height: 100vh;
                 outline: solid;
             }
-            .block {
+            .css_block {
                 display:flex;
                 white-space:nowrap;
                 background-color: orange;

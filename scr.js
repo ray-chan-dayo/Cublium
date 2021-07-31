@@ -322,6 +322,11 @@ var run = function run(trigger) {
                         eval(inside_eval.textContent);
                     });
                 };
+                if (run_triggered_child.classList.contains('alert')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
+                        alert(inside_editablelog.textContent);
+                    });
+                };
                 //no in HTML
                 if (run_triggered_child.classList.contains('appendchild')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
