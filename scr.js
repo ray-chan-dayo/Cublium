@@ -409,3 +409,4 @@ var namesettxt = function namesettxt() {
     log_element.name = document.getElementById("log").value;
     work.appendChild(log_element);
 };
+*/
