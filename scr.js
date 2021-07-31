@@ -119,13 +119,13 @@ document.onmousedown = function(event) {
         y = event.pageY - event.target.offsetTop;
         clicking = true;
         drag.style.zIndex = -1;
+        //もう使わないdivの削除
         if (event.target.id != 'movegen'){
-		var ray_cub_clone_parent=event.target.parentnode;
-		event.target.remove()
-		if (ray_cub_clone_parent.children.length==1) {
-		work.appendchild(ray_cub_clone_parent.children);
-		ray_cub_clone_parent.remove();
-		};
+		    var ray_cub_clone_parent=event.target.parentNode;
+		    event.target.remove()
+		    if (ray_cub_clone_parent.children.length==0) {
+		        ray_cub_clone_parent.remove();
+		    };
         };
     };
     if (event.target.classList.contains('lium')) {
