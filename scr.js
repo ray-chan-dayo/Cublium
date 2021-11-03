@@ -269,6 +269,7 @@ var gencode = function gencode(trigger) {
             });
         };
     });
+    console.log("end of line");
 };
 
 var run = function run(trigger) {
@@ -346,6 +347,10 @@ var run = function run(trigger) {
                 };
 
                 if (run_triggered_child.classList.contains('custom')) {
+                    eval(run_triggered_child.name);
+                };
+                
+                if (run_triggered_child.classList.contains('a')) {
                     eval(run_triggered_child.name);
                 };
             });
