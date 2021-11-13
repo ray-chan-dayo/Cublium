@@ -152,8 +152,7 @@ document.onmousedown = function(event) {
 document.onmousemove = function (event){
     run('trigger_mousemove');
 	if (clicking == true) {
-        if (using == true) {
-        }else{
+        if (!using == true) {
             drag.style.left = event.pageX - x + "px";
             drag.style.top = event.pageY - y + "px";
         };
