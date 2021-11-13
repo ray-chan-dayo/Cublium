@@ -1,13 +1,4 @@
 
-/*CONFIG
-
-CCCC OOOO N  N FFFF III GGGG
-C    O  O NN N F     I  G
-C    O  O N NN FFF   I  G GG
-C    O  O N  N F     I  G  G
-CCCC OOOO N  N F    III GGGG
-
-*/
 var block_height = 32;
 
 
@@ -22,69 +13,7 @@ var drag = null;
 const grop = document.createElement('div');
 var set_var
 var set_content
-/*
 
-CCCC L    OOOO N  N EEEE
-C    L    O  O NN N E
-C    L    O  O N NN EEE
-C    L    O  O N  N E
-CCCC LLLL OOOO N  N EEEE
-
-*/
-/*
-var set = function set() {
-    let smove = document.createElement('img');
-    //<event>
-    smove.addEventListener('mouseenter', function (event) {
-        //console.log ("over");
-        //console.log (event.target);
-        //console.log (event.target.classList);
-        if (event.target.classList.contains('block')) {
-            if (!drag.classList.contains('event')) {
-                using = true;
-                over = this;
-                drag.style.left = event.target.offsetLeft + "px";
-                drag.style.top = event.target.offsetTop + 100 + "px";
-                //console.log ("overcollect");
-            };
-        };
-    });
-    smove.addEventListener('mouseleave', function(event) {
-        //console.log ("overend");
-        using = false;
-        over = null;
-    });
-    //</event>
-    smove.src = drag.src;
-    smove.name = drag.name;
-    smove.alt = 'move';
-    smove.id = 'put'
-    var dragclass = Array.prototype.slice.call(drag.classList);
-    dragclass.forEach(dragc => {
-        if (dragc != 'event') {
-            smove.classList.add(dragc);
-        };
-    });
-    smove.classList.add('block')
-    drag.classList = [];
-    if (!using) {
-        let emove = document.createElement('div');
-        if (dragclass.includes('event')) {
-            dragclass.forEach(dragdivc => {
-                if (dragdivc != 'event') {
-                    if (dragdivc != 'block') {
-                        emove.classList.add(dragdivc);
-                    };
-                };
-            });
-        };
-        emove.appendChild(smove);
-        work.appendChild(emove);
-    }else {
-        over.parentElement.appendChild(smove);
-    };
-    dragclass = [];
-};*/
 var mouseenterfunction = function(event) {
     if (event.target.classList.contains('block') && !drag.classList.contains('event') && clicking) {
         using = true;
@@ -199,33 +128,7 @@ var set = function set() {
     };
     dragclass = [];
 };
-/*
-var testrun = function testrun() {
-    var runner = Array.prototype.slice.call(document.getElementsByClassName('testtrigger'));
-    console.log (runner);
-    runner.forEach(sprunner => {
-        if (sprunner.nodeName == 'DIV') {
-            console.log(sprunner);
-            var inrunner = Array.prototype.slice.call(sprunner.children);
-            inrunner.forEach(insiderunner => {
-                console.log (insiderunner.classList);
-                if (insiderunner.classList.contains('debug')) {
-                    console.log ("debug");
-                };
-                if (insiderunner.classList.contains('move')) {
-                    console.log ("move");
-                };
-                if (insiderunner.classList.contains('setimg')) {
-                    console.log ("setimg");
-                };
-                if (insiderunner.classList.contains('blos')) {
-                    console.log ("blos");
-                };
-            });
-        };
-    });
-};
-*/
+
 
 var gencode = function gencode(trigger) {
     var run_triggered_array = Array.prototype.slice.call(document.getElementsByClassName(trigger));
@@ -233,21 +136,13 @@ var gencode = function gencode(trigger) {
         if (run_triggered.nodeName == 'DIV') {
             var run_triggered_child_array = Array.prototype.slice.call(run_triggered.children);
             run_triggered_child_array.forEach(run_triggered_child => {
-                /*
-                if (run_triggered_child.classList.contains('debug')) {
-                    console.log("console.log('hello');");
-                };
-                */
+                
                 if (run_triggered_child.classList.contains('setimg')) {
                     var effect_setimg_element = document.createElement('img');
                     effect_setimg_element.src = run_triggered_child.name;
                     display.appendChild(effect_setimg_element);
                 };
-                /*
-                if (run_triggered_child.classList.contains('log')) {
-                    console.log("console.log('" + run_triggered_child.name + "');");
-                };
-                */
+                
                 if (run_triggered_child.classList.contains('editablelog')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
                         if (inside_editablelog.classList.contains('content'))
@@ -285,11 +180,7 @@ var run = function run(trigger) {
                     effect_setimg_element.src = run_triggered_child.name;
                     display.appendChild(effect_setimg_element);
                 };
-                /*
-                if (run_triggered_child.classList.contains('log')) {
-                    console.log(run_triggered_child.name); 
-                };
-                */
+               
                 if (run_triggered_child.classList.contains('editablelog')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
                         console.log(inside_editablelog.textContent); 
@@ -321,9 +212,9 @@ var run = function run(trigger) {
                     });
                 };
                 if (run_triggered_child.classList.contains('eval')) {
-                    //console.log("aaa")
+                    
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_eval => {
-                        //console.log(inside_eval)
+                        
                         eval(inside_eval.textContent);
                     });
                 };
@@ -332,7 +223,7 @@ var run = function run(trigger) {
                         alert(inside_editablelog.textContent);
                     });
                 };
-                //no in HTML
+
                 if (run_triggered_child.classList.contains('appendchild')) {
                     Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('parent')) {
@@ -395,22 +286,3 @@ inputFile.addEventListener("change", function(event) {
         };
     };
 },false);
-/*
-var namesetimg_element = document.createElement('img');
-namesetimg_element.src = "pic.png"
-namesetimg_element.classList.add('block');
-namesetimg_element.classList.add('setimg');
-var namesetimg = function namesetimg() {
-    namesetimg_element.name = document.getElementById("setimgtxt").value;
-    work.appendChild(namesetimg_element);
-};
-/*
-var log_element = document.createElement('img');
-log_element.src = "log.png";
-log_element.classList.add('block');
-log_element.classList.add('log');
-var namesettxt = function namesettxt() {
-    log_element.name = document.getElementById("log").value;
-    work.appendChild(log_element);
-};
-*/
