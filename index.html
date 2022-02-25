@@ -34,7 +34,7 @@
                 <br>
                 <br>
                 <div id="movegen" class='block classlist css_block' draggable="false">
-                    <div class="insertable mother" contenteditable="true">foo</div>に<div class="insertable content" contenteditable="true">1</div>を<select name="blood"><option value="add">追加</option><option value="remove">削除</option></select>する
+                    <div class="insertable mother" contenteditable="true">foo</div>配列に<div class="insertable content" contenteditable="true">1</div>を<select name="blood"><option value="add">追加</option><option value="remove">削除</option></select>する
                 </div>
                 <br>
                 <br>
@@ -49,7 +49,7 @@
                 <br>
                 <br>
                 <div id="movegen" class='block if mouse' draggable="false">
-                    <div class="css_block bypassint state">もし<div class="var" contenteditable="true">foo</div>なら</div>
+                    <div class="css_block bypassint state"><div class="var" contenteditable="true">foo</div>なら</div>
                     <div class="css_block bypassint end">を実行する</div>
                 </div>
                 <br>
@@ -127,6 +127,15 @@
             .insertable {
                 min-width: 20px;
                 background-color: yellow;
+            }
+            div.if {
+                min-height: 50px;
+                min-width: 80px;
+                display:flex;
+            }
+            div.end {
+                position: relative;
+                align-items: flex-end;
             }
         </style>
     </body>

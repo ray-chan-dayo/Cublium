@@ -8,7 +8,7 @@ C    O  O N  N F     I  G  G
 CCCC OOOO N  N F    III GGGG
 
 */
-var block_height = 32;
+var block_height = 25;
 
 
 
@@ -19,6 +19,7 @@ var clicking;
 var using;
 var over = null;
 var drag = null;
+var deling = false;
 const grop = document.createElement('div');
 var set_var
 var set_content
@@ -85,6 +86,34 @@ var set = function set() {
     };
     dragclass = [];
 };*/
+var mouseleavefunction = function mouseleavefunction() {
+    using = false;
+    over = null;
+    deling = false;
+}
+var set = function set() {
+    var movesetdom = drag.cloneNode(true);
+    movesetdom.addEventListener('mouseenter', mouseenterfunction);
+    movesetdom.addEventListener('mouseleave', mouseleavefunction);
+    movesetdom.alt = 'move';
+    movesetdom.id = 'put'
+    movesetdom.classList.add('block');
+    if (using) {
+        over.parentElement.appendChild(movesetdom);
+    }else {
+        let emove = document.createElement('div');
+        emove.classList = movesetdom.classList;
+        emove.classList.remove('block');
+        emove.classList.remove('event');
+        emove.appendChild(movesetdom);
+        work.appendChild(emove);
+    };
+    dragclass = [];
+};
+
+document.getElementById("css_gen").addEventListener('mouseenter', mouseenterfunction);
+document.getElementById("css_gen").addEventListener('mouseleave', mouseleavefunction);
+
 var mouseenterfunction = function(event) {
     if (event.target.classList.contains('block') && !drag.classList.contains('event') && clicking) {
         using = true;
@@ -97,6 +126,10 @@ var mouseenterfunction = function(event) {
         over = this;
         drag.style.left = event.target.offsetLeft + "px";
         drag.style.top = event.target.offsetTop + block_height + "px";
+    };
+    if (event.target.classList.contains('deleteblocks')) {
+        deling = true;
+        over = this;
     };
 };
 
@@ -171,33 +204,14 @@ document.onmouseup = function () {
         put.style.left = drag.style.left;
         put.style.top = drag.style.top;
         put.style.zIndex = 0;
+        if (deling) {
+            put.remove()
+        }
     };
     using = false;
     clicking = false;
     drag.remove();
     over = null;
-};
-var set = function set() {
-    var movesetdom = drag.cloneNode(true);
-    movesetdom.addEventListener('mouseenter', mouseenterfunction);
-    movesetdom.addEventListener('mouseleave', function mouseleavefunction() {
-        using = false;
-        over = null;
-    });
-    movesetdom.alt = 'move';
-    movesetdom.id = 'put'
-    movesetdom.classList.add('block');
-    if (using) {
-        over.parentElement.appendChild(movesetdom);
-    }else {
-        let emove = document.createElement('div');
-        emove.classList = movesetdom.classList;
-        emove.classList.remove('block');
-        emove.classList.remove('event');
-        emove.appendChild(movesetdom);
-        work.appendChild(emove);
-    };
-    dragclass = [];
 };
 /*
 var testrun = function testrun() {

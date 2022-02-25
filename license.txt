@@ -17,3 +17,4 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 いかなる場合においても作者は責任を負いません
 
 Copyright holder can change this license at anytime without any notice. Please check latest license everytime you use this.
+著作者はこのライセンスを通知することなくいつでも変更できます
