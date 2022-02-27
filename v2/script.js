@@ -1,6 +1,7 @@
 /*
 Cublium v2 beta
 変数型_temp_変数名
+todo:over
 */
 
 let status_isclicking = false
