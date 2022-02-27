@@ -19,67 +19,69 @@ document.onmousedown = function(event) {
     status_isclicking = true
     dom_mousedown_target = event.target
 
+    int_mousedown_offsetX = dom_mousedown_target.style.left-event.pageX //相対位置の測定
+    int_mousedown_offsetY = dom_mousedown_target.style.up-event.pageY
+
+    dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
+    dom_dragging.style.zIndex = -1
+
     //cubliumイベントを実行
     run('trigger_mousedown');
 
     if (dom_mousedown_target.classList.contains('class_codeblock_source_mono')) { //右側のコピー元からコピーする時
-
-        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
-        dom_dragging.classList.remove('class_codeblock_source_mono')
-        dom_codingspace.appendChild(dom_dragging)
         
         status_isdragging_codeblock_mono = true
 
+        dom_dragging.classList.remove('class_codeblock_source_mono')
+        dom_codingspace.appendChild(dom_dragging)
+
         dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
         dom_dragging.style.top = dom_mousedown_target.style.top
-        dom_dragging.style.zIndex = -1
 
-        int_mousedown_offsetX = dom_dragging.style.left-event.pageX //相対位置の測定
-        int_mousedown_offsetY = dom_dragging.style.up-event.pageY
     } //ここまで"右側のコピー元からコピーする時"
 
     //ここはonmousedownです
 
-    if (dom_mousedown_target.classList.contains('class_codeblock_source_trigger')) { //右側のコピー元からトリガーをコピーする時
+    if (dom_mousedown_target.classList.contains('class_codeblock_source_trigger')) { //右側からトリガーをコピーする時
+        
+        status_isdragging_codeblock_trigger = true
 
-        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=true
         dom_dragging.classList.remove('class_codeblock_source_trigger')
         dom_codingspace.appendChild(dom_dragging)
-        
-        status_isdragging_codeblock_mono = true
 
         dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
         dom_dragging.style.top = dom_mousedown_target.style.top
-        dom_dragging.style.zIndex = -1
-
-        int_mousedown_offsetX = dom_dragging.style.left-event.pageX //相対位置の測定
-        int_mousedown_offsetY = dom_dragging.style.up-event.pageY
-    } //ここまで"右側のコピー元からコピーする時"
+    } //ここまで"右側からトリガーをコピーする時"
 
     //ここはonmousedownです
 
     if (dom_mousedown_target.classList.contains('class_codeblock_mono')) { //ブロックを移動する時
+        
+        status_isdragging_codeblock_mono = true
 
-
-        dom_dragging = dom_mousedown_target.cloneNode(true) //クローン
         dom_dragging.classList.remove('class_codeblock_mono')
         dom_dragging.removeEventListener('mouseenter', blank)
         dom_dragging.removeEventListener('mouseleave', blank)
         dom_codingspace.appendChild(dom_dragging)
-        
-        status_isdragging_codeblock_mono = true
 
-        dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
-        dom_dragging.style.top = dom_mousedown_target.style.top
-        dom_dragging.style.zIndex = -1
+        lastof(siblingof(dom_mousedown_target)).classList.add('class_codeblock_connectable') //末っ子に結着を戻す。この機構は今後改善したい。
 
-        if (siblingof(array_dom_mousedown_target).length==0) { //掃除
-            dom_mousedown_target.parentNode.remove()
-        }else {
-            lastof(siblingof(dom_mousedown_target)).classList.add('class_codeblock_connectable') //末っ子に結着を戻す。この機構は今後改善したい。
-        }
         dom_mousedown_target.remove()
     } //ここまで"ブロックを移動する時"
+
+    //ここはonmousedownです
+
+    if (dom_mousedown_target.classList.contains('class_codeblock_trigger')) { //トリガーを移動する時
+        
+        status_isdragging_codeblock_trigger = true
+
+        dom_dragging.classList.remove('class_codeblock_trigger')
+        dom_dragging.removeEventListener('mouseenter', blank)
+        dom_dragging.removeEventListener('mouseleave', blank)
+        dom_codingspace.appendChild(dom_dragging)
+
+        dom_mousedown_target.parentNode.remove() //必要なくなったrunninggroupを削除
+    } //ここまで"トリガーを移動する時"
 }
 
 
@@ -120,7 +122,7 @@ document.onmouseup = function() {
             dom_codeblock_toconnect.parentNode.appendChild(dom_stopdragging) //末っ子として追加
 
         }else {
-            work.appendChild(dom_stopdragging);
+            dom_codingspace.appendChild(dom_stopdragging);
         }
     } //ここまでドラッグの終了
 
@@ -131,12 +133,11 @@ document.onmouseup = function() {
         dom_stopdragging.classList.add('class_codeblock_trigger')
         dom_stopdragging.classList.add('class_codeblock_connectable')
 
-        var dom_runninggroup = document.createElement('div')
+        dom_runninggroup = document.createElement('div')
         dom_runninggroup.name = dom_stopdragging.name //トリガーの継承を行う必要がある。
         dom_runninggroup.classList.remove('block')
         
         dom_runninggroup.appendChild(dom_stopdragging)
-        work.appendChild(dom_runninggroup)
+        dom_codingspace.appendChild(dom_runninggroup)
     } //ここまでドラッグの終了
-
 }
