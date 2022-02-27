@@ -134,10 +134,97 @@ document.onmouseup = function() {
         dom_stopdragging.classList.add('class_codeblock_connectable')
 
         dom_runninggroup = document.createElement('div')
-        dom_runninggroup.name = dom_stopdragging.name //トリガーの継承を行う必要がある。
+        dom_runninggroup.classList.add(dom_stopdragging.name) //トリガーの継承を行う必要がある。
         dom_runninggroup.classList.remove('block')
         
         dom_runninggroup.appendChild(dom_stopdragging)
         dom_codingspace.appendChild(dom_runninggroup)
     } //ここまでドラッグの終了
 }
+
+//runはv1を流用
+var run = function run(trigger) {
+    var run_triggered_array = Array.prototype.slice.call(document.getElementsByClassName(trigger));
+    run_triggered_array.forEach(run_triggered => {
+        if (run_triggered.nodeName == 'DIV') {
+            var run_triggered_child_array = Array.prototype.slice.call(run_triggered.children);
+            run_triggered_child_array.forEach(run_triggered_child => {
+                if (run_triggered_child.classList.contains('debug')) {
+                    console.log('hello');
+                };
+                if (run_triggered_child.classList.contains('setimg')) {
+                    var effect_setimg_element = document.createElement('img');
+                    effect_setimg_element.src = run_triggered_child.name;
+                    display.appendChild(effect_setimg_element);
+                };
+                /*
+                if (run_triggered_child.classList.contains('log')) {
+                    console.log(run_triggered_child.name); 
+                };
+                */
+                if (run_triggered_child.classList.contains('editablelog')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
+                        console.log(inside_editablelog.textContent); 
+                    });
+                };
+                if (run_triggered_child.classList.contains('set')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                        if (inside_set.classList.contains('var')) {
+                            set_var = inside_set.textContent;
+                        };
+                        if (inside_set.classList.contains('content')) {
+                            set_content = inside_set.textContent;
+                        };
+                    });
+                    eval (set_var + "='" + set_content + "';");
+                };
+                if (run_triggered_child.classList.contains('classlist')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                        if (inside_set.classList.contains('mother')) {
+                            set_mother = inside_set.textContent;
+                        };
+                        if (inside_set.classList.contains('operation')) {
+                                set_operation = inside_set.value;
+                        };
+                        if (inside_set.classList.contains('content')) {
+                            set_content = inside_set.textContent;
+                        };
+                    eval (set_mother + '.' + set_operation + '(' + set_content + ');');
+                    });
+                };
+                if (run_triggered_child.classList.contains('eval')) {
+                    //console.log("aaa")
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_eval => {
+                        //console.log(inside_eval)
+                        eval(inside_eval.textContent);
+                    });
+                };
+                if (run_triggered_child.classList.contains('alert')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
+                        alert(inside_editablelog.textContent);
+                    });
+                };
+                //not in HTML
+                if (run_triggered_child.classList.contains('appendchild')) {
+                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                        if (inside_set.classList.contains('parent')) {
+                            set_parent = inside_set.value;
+                        };
+                        if (inside_set.classList.contains('child')) {
+                            set_child = inside_set.value;
+                        };
+                    });
+                    eval (set_parent + '.appendchild(' + set_child + ');');
+                };
+
+                if (run_triggered_child.classList.contains('custom')) {
+                    eval(run_triggered_child.name);
+                };
+                
+                if (run_triggered_child.classList.contains('a')) {
+                    eval(run_triggered_child.name);
+                };
+            });
+        };
+    });
+};
