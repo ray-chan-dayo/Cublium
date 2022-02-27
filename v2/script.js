@@ -2,15 +2,32 @@
 Cublium v2 beta
 変数型_temp_変数名
 */
-var blank = function blank() {
+
+let status_isclicking = false
+let status_isdragging_codeblock_mono = false
+let status_isdragging_codeblock_trigger = false
+let status_ready2connect = false
+
+
+let int_mousedown_offsetX
+let int_mousedown_offsetY
+
+let dom_dragging
+let dom_mousedown_target
+let dom_stopdragging
+let dom_runninggroup
+
+const dom_codingspace = getElementByID('work')
+
+const blank = function blank() {
 
 }
 
-var lastof = function lastof(arg1) {
+const lastof = function lastof(arg1) {
     return arg1[arg1.length - 1]
 }
 
-var siblingof = function siblingof(arg2) {
+const siblingof = function siblingof(arg2) {
     return arg2.parentNode.children()
 }
 
@@ -140,6 +157,27 @@ document.onmouseup = function() {
         dom_runninggroup.appendChild(dom_stopdragging)
         dom_codingspace.appendChild(dom_runninggroup)
     } //ここまでドラッグの終了
+}
+
+var keydetect = function keydetect(dom) {
+    document.addEventListener('keydown', logKey);
+    console.log(dom.value);
+    var keydetect_class = "trigger_keydown_" + dom.value;
+    console.log(keydetect_class);
+    eval("dom.parentNode.classList.remove('"+keydetect_class+"');");
+    eval("dom.parentNode.parentNode.classList.remove('"+keydetect_class+"');");
+    function logKey(event) {
+        console.log(event.code);
+        dom.value = event.code;
+        document.removeEventListener('keydown', logKey);
+        var keydetect_class = "trigger_keydown_" + event.code;
+        eval("dom.parentNode.classList.add('"+keydetect_class+"');");
+        eval("dom.parentNode.parentNode.classList.add('"+keydetect_class+"');");
+    }
+}
+
+document.onkeydown = function kyples(event) {
+    eval("run('trigger_keydown_"+event.code+"')");
 }
 
 //runはv1を流用
