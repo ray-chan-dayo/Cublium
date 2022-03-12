@@ -19,6 +19,7 @@ let dom_stopdragging
 let dom_runninggroup
 
 const dom_codingspace = getElementByID('work')
+const dom_exportspace = getElementByID('display')
 
 const blank = function blank() {
 
@@ -50,28 +51,15 @@ document.onmousedown = function(event) {
         
         status_isdragging_codeblock_mono = true
 
-        dom_dragging.classList.remove('class_codeblock_source_mono')
+        if (!dom_dragging.classList.remove('class_codeblock_source_mono')) {
+
+        }
         dom_codingspace.appendChild(dom_dragging)
 
         dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
         dom_dragging.style.top = dom_mousedown_target.style.top
 
     } //ここまで"右側のコピー元からコピーする時"
-
-    //ここはonmousedownです
-
-    if (dom_mousedown_target.classList.contains('class_codeblock_source_trigger')) { //右側からトリガーをコピーする時
-        
-        status_isdragging_codeblock_trigger = true
-
-        dom_dragging.classList.remove('class_codeblock_source_trigger')
-        dom_codingspace.appendChild(dom_dragging)
-
-        dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
-        dom_dragging.style.top = dom_mousedown_target.style.top
-    } //ここまで"右側からトリガーをコピーする時"
-
-    //ここはonmousedownです
 
     if (dom_mousedown_target.classList.contains('class_codeblock_mono')) { //ブロックを移動する時
         
@@ -87,7 +75,24 @@ document.onmousedown = function(event) {
         dom_mousedown_target.remove()
     } //ここまで"ブロックを移動する時"
 
+
     //ここはonmousedownです
+
+    
+    if (dom_mousedown_target.classList.contains('class_codeblock_source_trigger')) { //右側からトリガーをコピーする時
+        
+        status_isdragging_codeblock_trigger = true
+
+        dom_dragging.classList.remove('class_codeblock_source_trigger')
+        dom_codingspace.appendChild(dom_dragging)
+
+        dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
+        dom_dragging.style.top = dom_mousedown_target.style.top
+    } //ここまで"トリガーをコピーする時"
+
+
+    //ここはonmousedownです
+
 
     if (dom_mousedown_target.classList.contains('class_codeblock_trigger')) { //トリガーを移動する時
         
@@ -100,6 +105,71 @@ document.onmousedown = function(event) {
 
         dom_mousedown_target.parentNode.remove() //必要なくなったrunninggroupを削除
     } //ここまで"トリガーを移動する時"
+
+
+    //ここはonmousedownです
+
+
+    if (dom_mousedown_target.classList.contains('class_codeblock_source_quart')) { //右側のコピー元からifやforをコピーする時
+        
+        status_isdragging_codeblock_mono = true
+
+        if (!dom_dragging.classList.remove('class_codeblock_source_mono')) {
+            
+        }
+        dom_codingspace.appendChild(dom_dragging)
+
+        dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
+        dom_dragging.style.top = dom_mousedown_target.style.top
+
+    } //ifやforをコピーする時"
+
+    if (dom_mousedown_target.classList.contains('class_codeblock_quart')) { //ifやforを移動する時
+        
+        status_isdragging_codeblock_mono = true
+
+        dom_dragging.classList.remove('class_codeblock_quart')
+        dom_dragging.removeEventListener('mouseenter', blank)
+        dom_dragging.removeEventListener('mouseleave', blank)
+        dom_codingspace.appendChild(dom_dragging)
+
+        lastof(siblingof(dom_mousedown_target)).classList.add('class_codeblock_connectable') //末っ子に結着を戻す。この機構は今後改善したい。
+
+        dom_mousedown_target.remove()
+    } //ここまで"ifやforを移動する時"
+
+
+    //ここはonmousedownです
+
+
+    if (dom_mousedown_target.classList.contains('class_codeblock_source_')) { //右側のコピー元から変数とかコピーする時
+        
+        status_isdragging_codeblock_mono = true
+
+        if (!dom_dragging.classList.remove('class_codeblock_source_')) {
+
+        }
+        dom_codingspace.appendChild(dom_dragging)
+
+        dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
+        dom_dragging.style.top = dom_mousedown_target.style.top
+
+    } //ここまで"変数とかコピーする時"
+
+    if (dom_mousedown_target.classList.contains('class_codeblock_')) { //ブロックを移動する時
+        
+        status_isdragging_codeblock_mono = true
+
+        dom_dragging.classList.remove('class_codeblock_')
+        dom_dragging.removeEventListener('mouseenter', blank)
+        dom_dragging.removeEventListener('mouseleave', blank)
+        dom_codingspace.appendChild(dom_dragging)
+
+        //lastof(siblingof(dom_mousedown_target)).classList.add('class_codeblock_connectable') //末っ子に結着を戻す。この機構は今後改善したい。
+        //ここ変える
+
+        dom_mousedown_target.remove()
+    } //ここまで"変数とかを移動する時"
 }
 
 
@@ -110,7 +180,7 @@ document.onmousemove = function() {
     //cubliumイベントを実行
     run('trigger_mousemove');
 
-    if (status_isclicking && ! status_ready2connect) { //ドラッグ中の位置移動(位置固定がない場合)
+    if (status_isclicking && ! status_connectready) { //ドラッグ中の位置移動(位置固定がない場合)
         dom_dragging.style.left = event.pageX - int_mousedown_offsetX
         dom_dragging.style.up = event.pageY - int_mousedown_offsetY
     }
@@ -133,7 +203,7 @@ document.onmouseup = function() {
         dom_stopdragging.addEventListener('mouseleave', mouseleavefunction)
         dom_stopdragging.classList.add('class_codeblock_mono')
 
-        if (status_ready2connect) {
+        if (status_connectready) {
 
             dom_codeblock_toconnect.classList.remove('class_codeblock_connectable')
             dom_stopdragging.classList.add('class_codeblock_connectable')
@@ -160,6 +230,11 @@ document.onmouseup = function() {
     } //ここまでドラッグの終了
 }
 
+
+
+
+
+//キーの設定。未整備
 var keydetect = function keydetect(dom) {
     document.addEventListener('keydown', logKey);
     console.log(dom.value);
@@ -177,93 +252,133 @@ var keydetect = function keydetect(dom) {
     }
 }
 
-document.onkeydown = function kyples(event) {
+document.onkeydown = function keypress(event) {
     eval("run('trigger_keydown_"+event.code+"')");
 }
+
+
+
+
 
 //runはv1を流用
 var run = function run(trigger) {
     var run_triggered_array = Array.prototype.slice.call(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
         if (run_triggered.nodeName == 'DIV') {
-            var run_triggered_child_array = Array.prototype.slice.call(run_triggered.children);
-            run_triggered_child_array.forEach(run_triggered_child => {
-                if (run_triggered_child.classList.contains('debug')) {
-                    console.log('hello');
-                };
-                if (run_triggered_child.classList.contains('setimg')) {
-                    var effect_setimg_element = document.createElement('img');
-                    effect_setimg_element.src = run_triggered_child.name;
-                    display.appendChild(effect_setimg_element);
-                };
-                /*
-                if (run_triggered_child.classList.contains('log')) {
-                    console.log(run_triggered_child.name); 
-                };
-                */
-                if (run_triggered_child.classList.contains('editablelog')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
-                        console.log(inside_editablelog.textContent); 
-                    });
-                };
-                if (run_triggered_child.classList.contains('set')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('var')) {
-                            set_var = inside_set.textContent;
-                        };
-                        if (inside_set.classList.contains('content')) {
-                            set_content = inside_set.textContent;
-                        };
-                    });
-                    eval (set_var + "='" + set_content + "';");
-                };
-                if (run_triggered_child.classList.contains('classlist')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('mother')) {
-                            set_mother = inside_set.textContent;
-                        };
-                        if (inside_set.classList.contains('operation')) {
-                                set_operation = inside_set.value;
-                        };
-                        if (inside_set.classList.contains('content')) {
-                            set_content = inside_set.textContent;
-                        };
-                    eval (set_mother + '.' + set_operation + '(' + set_content + ');');
-                    });
-                };
-                if (run_triggered_child.classList.contains('eval')) {
-                    //console.log("aaa")
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_eval => {
-                        //console.log(inside_eval)
-                        eval(inside_eval.textContent);
-                    });
-                };
-                if (run_triggered_child.classList.contains('alert')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
-                        alert(inside_editablelog.textContent);
-                    });
-                };
-                //not in HTML
-                if (run_triggered_child.classList.contains('appendchild')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('parent')) {
-                            set_parent = inside_set.value;
-                        };
-                        if (inside_set.classList.contains('child')) {
-                            set_child = inside_set.value;
-                        };
-                    });
-                    eval (set_parent + '.appendchild(' + set_child + ');');
-                };
-
-                if (run_triggered_child.classList.contains('custom')) {
-                    eval(run_triggered_child.name);
-                };
-                
-                if (run_triggered_child.classList.contains('a')) {
-                    eval(run_triggered_child.name);
-                };
-            });
+            function_run(dom_div_torun)
         };
     });
 };
+
+//未整備
+var function_run = function function_run(dom_div_torun) {
+    dom_div_torun.children.forEach(dom_runningblock => { //子要素のそれぞれについて実行
+
+        //整備済み
+
+        if (dom_runningblock.classList.contains('class_monocodeblock_consolelog')) {
+            dom_runningblock.children.forEach(dom_temp_consolelog_run_children => {
+
+                console.log(dom_temp_consolelog_run_children.textContent)
+
+            })
+        }
+        
+        if (dom_runningblock.classList.contains('class_monocodeblock_alart')) {
+            dom_runningblock.children.forEach(dom_temp_alart_run_children => {
+
+                alert(dom_temp_alart_run_children.textContent)
+
+            })
+        }
+        
+        if (dom_runningblock.classList.contains('class_monocodeblock_eval')) {
+            dom_runningblock.children.forEach(dom_temp_eval_run_children => {
+
+                eval(dom_temp_eval_run_children.textContent)
+
+            })
+        }
+
+        //未実装(整備はした)
+
+        if (dom_runningblock.classList.contains('class_monocodeblock_debug')) {
+            console.log('Hello, World!')
+        }
+        
+        if (dom_runningblock.classList.contains('class_monocodeblock_changebackgroundcolor')) {
+            dom_runningblock.children.forEach(dom_temp_changebackgroundcolor_run_children => {
+
+                dom_exportspace.style.backgroundColor = dom_temp_changebackgroundcolor_run_children.value
+
+            })
+        }
+
+        if (dom_runningblock.classList.contains('class_monocodeblock_custom')) {
+            eval(dom_runningblock.name)
+        }
+        
+        if (dom_runningblock.classList.contains('class_quartcodeblock_if')) {
+
+            dom_runningblock.children.forEach(dom_temp_if_run_children => {
+                if (dom_temp_if_run_children.classList.contains('class_insideif_condition')) {
+                    dom_temp_if_run_condition = eval(dom_temp_if_run_children.name)
+                }
+            })
+
+            dom_runningblock.children.forEach(dom_temp_if_run_children => {
+                if (dom_temp_if_run_condition && dom_temp_if_run_children.classList.contains('class_insideif_codetorun')) {
+                    function_run(dom_temp_if_run_children);
+                }
+            })
+
+        }
+
+        //未整備
+
+       if (dom_runningblock.classList.contains('set')) {
+            Array.prototype.slice.call(dom_runningblock.children).forEach(inside_set => {
+                if (inside_set.classList.contains('var')) {
+                    set_var = inside_set.textContent;
+                };
+                if (inside_set.classList.contains('content')) {
+                    set_content = inside_set.textContent;
+                };
+            });
+            eval (set_var + "='" + set_content + "';");
+        };
+
+        if (dom_runningblock.classList.contains('classlist')) {
+            Array.prototype.slice.call(dom_runningblock.children).forEach(inside_set => {
+                if (inside_set.classList.contains('mother')) {
+                    set_mother = inside_set.textContent;
+                };
+                if (inside_set.classList.contains('operation')) {
+                    set_operation = inside_set.value;
+                };
+                if (inside_set.classList.contains('content')) {
+                    set_content = inside_set.textContent;
+                };
+                eval (set_mother + '.' + set_operation + '(' + set_content + ');');
+           });
+        };
+
+        //not in HTML
+        if (dom_runningblock.classList.contains('appendchild')) {
+            Array.prototype.slice.call(dom_runningblock.children).forEach(inside_set => {
+                if (inside_set.classList.contains('parent')) {
+                    set_parent = inside_set.value;
+                };
+                if (inside_set.classList.contains('child')) {
+                    set_child = inside_set.value;
+                };
+            });
+            eval (set_parent + '.appendchild(' + set_child + ');');
+        };
+
+        
+
+    });
+};
+
+//背景色を追加 <input type="color" name="example" value="#ff0000">
