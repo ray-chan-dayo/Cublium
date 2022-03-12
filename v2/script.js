@@ -51,9 +51,8 @@ document.onmousedown = function(event) {
         
         status_isdragging_codeblock_mono = true
 
-        if (!dom_dragging.classList.remove('class_codeblock_source_mono')) {
-
-        }
+        dom_dragging.classList.remove('class_codeblock_source_mono')
+        
         dom_codingspace.appendChild(dom_dragging)
 
         dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
