@@ -8,21 +8,28 @@ C    O  O N  N F     I  G  G
 CCCC OOOO N  N F    III GGGG
 
 */
-var block_height = 25;
+const block_height = 25;
 
 
 
 
 var x;
 var y;
-var clicking;
-var using;
-var over = null;
-var drag = null;
+var status_dragging;
+var status_connectready;
+var dom_codeblock_toconnect = null;
+var dom_dragging = null;
 var deling = false;
 const grop = document.createElement('div');
 var set_var
 var set_content
+
+
+const toarray = function toarray(arg3) {
+    return Array.prototype.slice.call(arg3)
+}
+
+
 /*
 
 CCCC L    OOOO N  N EEEE
@@ -37,76 +44,76 @@ var set = function set() {
     let smove = document.createElement('img');
     //<event>
     smove.addEventListener('mouseenter', function (event) {
-        //console.log ("over");
+        //console.log ("dom_codeblock_toconnect");
         //console.log (event.target);
         //console.log (event.target.classList);
         if (event.target.classList.contains('block')) {
-            if (!drag.classList.contains('event')) {
-                using = true;
-                over = this;
-                drag.style.left = event.target.offsetLeft + "px";
-                drag.style.top = event.target.offsetTop + 100 + "px";
-                //console.log ("overcollect");
+            if (!dom_dragging.classList.contains('event')) {
+                status_connectready = true;
+                dom_codeblock_toconnect = this;
+                dom_dragging.style.left = event.target.offsetLeft + "px";
+                dom_dragging.style.top = event.target.offsetTop + 100 + "px";
+                //console.log ("dom_codeblock_toconnectcollect");
             };
         };
     });
     smove.addEventListener('mouseleave', function(event) {
-        //console.log ("overend");
-        using = false;
-        over = null;
+        //console.log ("dom_codeblock_toconnectend");
+        status_connectready = false;
+        dom_codeblock_toconnect = null;
     });
     //</event>
-    smove.src = drag.src;
-    smove.name = drag.name;
+    smove.src = dom_dragging.src;
+    smove.name = dom_dragging.name;
     smove.alt = 'move';
     smove.id = 'put'
-    var dragclass = Array.prototype.slice.call(drag.classList);
-    dragclass.forEach(dragc => {
-        if (dragc != 'event') {
-            smove.classList.add(dragc);
+    var dragclass = toarray(dom_dragging.classList);
+    dragclass.forEach(dom_draggingc => {
+        if (dom_draggingc != 'event') {
+            smove.classList.add(dom_draggingc);
         };
     });
     smove.classList.add('block')
-    drag.classList = [];
-    if (!using) {
-        let emove = document.createElement('div');
+    dom_dragging.classList = [];
+    if (!status_connectready) {
+        let dom_runninggroup = document.createElement('div');
         if (dragclass.includes('event')) {
-            dragclass.forEach(dragdivc => {
-                if (dragdivc != 'event') {
-                    if (dragdivc != 'block') {
-                        emove.classList.add(dragdivc);
+            dragclass.forEach(dom_draggingdivc => {
+                if (dom_draggingdivc != 'event') {
+                    if (dom_draggingdivc != 'block') {
+                        dom_runninggroup.classList.add(dom_draggingdivc);
                     };
                 };
             });
         };
-        emove.appendChild(smove);
-        work.appendChild(emove);
+        dom_runninggroup.appendChild(smove);
+        work.appendChild(dom_runninggroup);
     }else {
-        over.parentElement.appendChild(smove);
+        dom_codeblock_toconnect.parentElement.appendChild(smove);
     };
     dragclass = [];
 };*/
 var mouseleavefunction = function mouseleavefunction() {
-    using = false;
-    over = null;
+    status_connectready = false;
+    dom_codeblock_toconnect = null;
     deling = false;
 }
 var set = function set() {
-    var movesetdom = drag.cloneNode(true);
+    var movesetdom = dom_dragging.cloneNode(true);
     movesetdom.addEventListener('mouseenter', mouseenterfunction);
     movesetdom.addEventListener('mouseleave', mouseleavefunction);
     movesetdom.alt = 'move';
     movesetdom.id = 'put'
     movesetdom.classList.add('block');
-    if (using) {
-        over.parentElement.appendChild(movesetdom);
+    if (status_connectready) {
+        dom_codeblock_toconnect.parentElement.appendChild(movesetdom);
     }else {
-        let emove = document.createElement('div');
-        emove.classList = movesetdom.classList;
-        emove.classList.remove('block');
-        emove.classList.remove('event');
-        emove.appendChild(movesetdom);
-        work.appendChild(emove);
+        let dom_runninggroup = document.createElement('div');
+        dom_runninggroup.classList = movesetdom.classList;
+        dom_runninggroup.classList.remove('block');
+        dom_runninggroup.classList.remove('event');
+        dom_runninggroup.appendChild(movesetdom);
+        work.appendChild(dom_runninggroup);
     };
     dragclass = [];
 };
@@ -115,21 +122,21 @@ document.getElementById("css_gen").addEventListener('mouseenter', mouseenterfunc
 document.getElementById("css_gen").addEventListener('mouseleave', mouseleavefunction);
 
 var mouseenterfunction = function(event) {
-    if (event.target.classList.contains('block') && !drag.classList.contains('event') && clicking) {
-        using = true;
-        over = this;
-        drag.style.left = event.target.offsetLeft + "px";
-        drag.style.top = event.target.offsetTop + block_height + "px";
+    if (event.target.classList.contains('block') && !dom_dragging.classList.contains('event') && status_dragging) {
+        status_connectready = true;
+        dom_codeblock_toconnect = this;
+        dom_dragging.style.left = event.target.offsetLeft + "px";
+        dom_dragging.style.top = event.target.offsetTop + block_height + "px";
     };
-    if (event.target.classList.contains('insertable') && !drag.classList.contains('event') && liumclicking) {
-        liumusing = true;
-        over = this;
-        drag.style.left = event.target.offsetLeft + "px";
-        drag.style.top = event.target.offsetTop + block_height + "px";
+    if (event.target.classList.contains('insertable') && !dom_dragging.classList.contains('event') && liumstatus_dragging) {
+        liumstatus_connectready = true;
+        dom_codeblock_toconnect = this;
+        dom_dragging.style.left = event.target.offsetLeft + "px";
+        dom_dragging.style.top = event.target.offsetTop + block_height + "px";
     };
     if (event.target.classList.contains('deleteblocks')) {
         deling = true;
-        over = this;
+        dom_codeblock_toconnect = this;
     };
 };
 
@@ -138,7 +145,7 @@ var mouseenterfunction = function(event) {
 document.onmousedown = function(event) {
     run('trigger_mousedown');
 
-    using = false;
+    status_connectready = false;
     if (event.target.classList.contains('block')) {
         var movecopydom = event.target.cloneNode(true);
         if (movecopydom.removeEventListener('mouseenter', mouseenterfunction)) {
@@ -147,11 +154,11 @@ document.onmousedown = function(event) {
         movecopydom.classList.remove('block');
         movecopydom.id = 'move';
         work.appendChild(movecopydom);
-        drag = document.getElementById("move");
+        dom_dragging = document.getElementById("move");
         x = event.pageX - event.target.offsetLeft;
         y = event.pageY - event.target.offsetTop;
-        clicking = true;
-        drag.style.zIndex = -1;
+        status_dragging = true;
+        dom_dragging.style.zIndex = -1;
         //もう使わないdivの削除
         if (event.target.id != 'movegen'){
 		    var ray_cub_clone_parent=event.target.parentNode;
@@ -169,11 +176,11 @@ document.onmousedown = function(event) {
         movecopydom.classList.remove('block');
         movecopydom.id = 'move';
         work.appendChild(movecopydom);
-        drag = document.getElementById("move");
+        dom_dragging = document.getElementById("move");
         x = event.pageX - event.target.offsetLeft;
         y = event.pageY - event.target.offsetTop;
-        liumclicking = true;
-        drag.style.zIndex = -1;
+        liumstatus_dragging = true;
+        dom_dragging.style.zIndex = -1;
         if (event.target.id != 'movegen'){
             event.target.remove();
         };
@@ -182,12 +189,12 @@ document.onmousedown = function(event) {
 
 
 
-document.onmousemove = function (event){
+document.onmousemove = function reload(event){
     run('trigger_mousemove');
-	if (clicking == true) {
-        if (!using == true) {
-            drag.style.left = event.pageX - x + "px";
-            drag.style.top = event.pageY - y + "px";
+	if (status_dragging == true) {
+        if (status_connectready != true) {
+            dom_dragging.offsetLeft = event.pageX - x + "px";
+            dom_dragging.style.top = event.pageY - y + "px";
         };
     };
 };
@@ -196,31 +203,31 @@ document.onmousemove = function (event){
 
 //
 document.onmouseup = function () {
-    if (clicking == true) {
-        run('trigger_mouseup');
+    run('trigger_mouseup');
+    if (status_dragging == true) {
         set();
         var put = document.getElementById('put');
         put.removeAttribute("id");
-        put.style.left = drag.style.left;
-        put.style.top = drag.style.top;
+        put.style.left = dom_dragging.style.left;
+        put.style.top = dom_dragging.style.top;
         put.style.zIndex = 0;
         if (deling) {
             put.remove()
         }
     };
-    using = false;
-    clicking = false;
-    drag.remove();
-    over = null;
+    status_connectready = false;
+    status_dragging = false;
+    dom_dragging.remove();
+    dom_codeblock_toconnect = null;
 };
 /*
 var testrun = function testrun() {
-    var runner = Array.prototype.slice.call(document.getElementsByClassName('testtrigger'));
+    var runner = toarray(document.getElementsByClassName('testtrigger'));
     console.log (runner);
     runner.forEach(sprunner => {
         if (sprunner.nodeName == 'DIV') {
             console.log(sprunner);
-            var inrunner = Array.prototype.slice.call(sprunner.children);
+            var inrunner = toarray(sprunner.children);
             inrunner.forEach(insiderunner => {
                 console.log (insiderunner.classList);
                 if (insiderunner.classList.contains('debug')) {
@@ -242,10 +249,10 @@ var testrun = function testrun() {
 */
 
 var gencode = function gencode(trigger) {
-    var run_triggered_array = Array.prototype.slice.call(document.getElementsByClassName(trigger));
+    var run_triggered_array = toarray(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
         if (run_triggered.nodeName == 'DIV') {
-            var run_triggered_child_array = Array.prototype.slice.call(run_triggered.children);
+            var run_triggered_child_array = toarray(run_triggered.children);
             run_triggered_child_array.forEach(run_triggered_child => {
                 /*
                 if (run_triggered_child.classList.contains('debug')) {
@@ -263,13 +270,13 @@ var gencode = function gencode(trigger) {
                 };
                 */
                 if (run_triggered_child.classList.contains('editablelog')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
+                    toarray(run_triggered_child.children).forEach(inside_editablelog => {
                         if (inside_editablelog.classList.contains('content'))
                     console.log("console.log('" + inside_editablelog.value + "');"); 
                     });
                 };
                 if (run_triggered_child.classList.contains('set')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                    toarray(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('var')) {
                             set_var = inside_set.value;
                         };
@@ -286,10 +293,10 @@ var gencode = function gencode(trigger) {
 };
 
 var run = function run(trigger) {
-    var run_triggered_array = Array.prototype.slice.call(document.getElementsByClassName(trigger));
+    var run_triggered_array = toarray(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
         if (run_triggered.nodeName == 'DIV') {
-            var run_triggered_child_array = Array.prototype.slice.call(run_triggered.children);
+            var run_triggered_child_array = toarray(run_triggered.children);
             run_triggered_child_array.forEach(run_triggered_child => {
                 if (run_triggered_child.classList.contains('debug')) {
                     console.log('hello');
@@ -305,12 +312,12 @@ var run = function run(trigger) {
                 };
                 */
                 if (run_triggered_child.classList.contains('editablelog')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
+                    toarray(run_triggered_child.children).forEach(inside_editablelog => {
                         console.log(inside_editablelog.textContent); 
                     });
                 };
                 if (run_triggered_child.classList.contains('set')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                    toarray(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('var')) {
                             set_var = inside_set.textContent;
                         };
@@ -321,7 +328,7 @@ var run = function run(trigger) {
                     eval (set_var + "='" + set_content + "';");
                 };
                 if (run_triggered_child.classList.contains('classlist')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                    toarray(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('mother')) {
                             set_mother = inside_set.textContent;
                         };
@@ -336,19 +343,24 @@ var run = function run(trigger) {
                 };
                 if (run_triggered_child.classList.contains('eval')) {
                     //console.log("aaa")
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_eval => {
+                    toarray(run_triggered_child.children).forEach(inside_eval => {
                         //console.log(inside_eval)
                         eval(inside_eval.textContent);
                     });
                 };
                 if (run_triggered_child.classList.contains('alert')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_editablelog => {
+                    toarray(run_triggered_child.children).forEach(inside_editablelog => {
                         alert(inside_editablelog.textContent);
+                    });
+                };
+                if (run_triggered_child.classList.contains('changebackgroundcolor')) {
+                    toarray(run_triggered_child.children).forEach(inside_editablelog => {
+                        document.getElementById("display").style.backgroundColor=inside_editablelog.value;
                     });
                 };
                 //no in HTML
                 if (run_triggered_child.classList.contains('appendchild')) {
-                    Array.prototype.slice.call(run_triggered_child.children).forEach(inside_set => {
+                    toarray(run_triggered_child.children).forEach(inside_set => {
                         if (inside_set.classList.contains('parent')) {
                             set_parent = inside_set.value;
                         };
@@ -371,44 +383,44 @@ var run = function run(trigger) {
     });
 };
 
-var kydytecto = function kydytecto(dom) {
+var keydetect = function keydetect(dom) {
     document.addEventListener('keydown', logKey);
     console.log(dom.value);
-    var kydytecto_class = "trigger_" + dom.value;
-    console.log(kydytecto_class);
-    eval("dom.parentNode.classList.remove('"+kydytecto_class+"');");
-    eval("dom.parentNode.parentNode.classList.remove('"+kydytecto_class+"');");
+    var keydetect_class = "trigger_" + dom.value;
+    console.log(keydetect_class);
+    eval("dom.parentNode.classList.remove('"+keydetect_class+"');");
+    eval("dom.parentNode.parentNode.classList.remove('"+keydetect_class+"');");
     function logKey(event) {
         console.log(event.code);
         dom.value = event.code;
         document.removeEventListener('keydown', logKey);
-        var kydytecto_class = "trigger_" + event.code;
-        eval("dom.parentNode.classList.add('"+kydytecto_class+"');");
-        eval("dom.parentNode.parentNode.classList.add('"+kydytecto_class+"');");
+        var keydetect_class = "trigger_" + event.code;
+        eval("dom.parentNode.classList.add('"+keydetect_class+"');");
+        eval("dom.parentNode.parentNode.classList.add('"+keydetect_class+"');");
     }
 }
 
-document.onkeydown = function kyples(event) {
+document.onkeydown = function keypress(event) {
     eval("run('trigger_"+event.code+"')");
 }
 
-var inputFile = document.getElementById('inputfiles');
-inputFile.addEventListener("change", function(event) {
-    if (event.target.file.type == 'javascript') {
-        var reader = new FileReader();
-        reader.readAsText(event.target.file);
-        reader.onload = function() {
-            se = "/*" + reader.result.replace("console.log('hello')", "*/ gen('debug'); /*").replace("setimg()", "*/gen('setimg');/*").replace(";", ";/*") + "*/".replace("}", "};/*") + "*/";
-            eval(se);
-        };
-    }else {
-        var reader = new FileReader();
-        reader.readAsText(event.target.file);
-        reader.onload = function() {
-            eval("var FILE_" + event.target.file.name + " = event.target.file;");
-        };
-    };
-},false);
+//var inputFile = document.getElementById('inputfiles');
+//inputFile.addEventListener("change", function(event) {
+//    if (event.target.file.type == 'javascript') {
+//        var reader = new FileReader();
+//        reader.readAsText(event.target.file);
+//        reader.onload = function() {
+//            se = "/*" + reader.result.replace("console.log('hello')", "*/ gen('debug'); /*").replace("setimg()", "*/gen('setimg');/*").replace(";", ";/*") + "*/".replace("}", "};/*") + "*/";
+//            eval(se);
+//        };
+//    }else {
+//        var reader = new FileReader();
+//        reader.readAsText(event.target.file);
+//        reader.onload = function() {
+//            eval("var FILE_" + event.target.file.name + " = event.target.file;");
+//        };
+//    };
+//},false);
 /*
 var namesetimg_element = document.createElement('img');
 namesetimg_element.src = "pic.png"

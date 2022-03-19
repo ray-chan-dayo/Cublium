@@ -3,11 +3,12 @@ Cublium v2 beta
 変数型_temp_変数名
 todo:over
 */
+const block_height = 25;
 
 let status_isclicking = false
 let status_isdragging_codeblock_mono = false
 let status_isdragging_codeblock_trigger = false
-let status_ready2connect = false
+let status_connectready = false
 
 
 let int_mousedown_offsetX
@@ -18,11 +19,26 @@ let dom_mousedown_target
 let dom_stopdragging
 let dom_runninggroup
 
-const dom_codingspace = getElementByID('work')
-const dom_exportspace = getElementByID('display')
+const dom_codingspace = document.getElementById('work')
+const dom_exportspace = document.getElementById('display')
 
 const blank = function blank() {
 
+}
+//未整備
+var mouseenterfunction = function(event) {
+    if (status_isclicking && status_isdragging_codeblock_mono && event.target.classList.contains("class_codeblock_connectable")) {
+        status_connectready = true;
+        dom_codeblock_toconnect = this;
+        dom_dragging.style.offsetLeft = event.target.offsetLeft;
+        dom_dragging.style.top = event.target.offsetTop + block_height;
+    };
+};
+
+var mouseleavefunction = function mouseleavefunction() {
+    using = false;
+    over = null;
+    deling = false;
 }
 
 const lastof = function lastof(arg1) {
@@ -33,38 +49,48 @@ const siblingof = function siblingof(arg2) {
     return arg2.parentNode.children()
 }
 
+const html2array = function html2array(arg3) {
+    return Array.prototype.slice.call(arg3)
+}
+
+
+
 document.onmousedown = function(event) {
 
     status_isclicking = true
     dom_mousedown_target = event.target
 
-    int_mousedown_offsetX = dom_mousedown_target.style.left-event.pageX //相対位置の測定
-    int_mousedown_offsetY = dom_mousedown_target.style.up-event.pageY
+    int_mousedown_offsetX = event.target.offsetLeft-event.pageX //相対位置の測定
+    int_mousedown_offsetY = event.target.offsetTop-event.pageY
 
-    dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
-    dom_dragging.style.zIndex = -1
+    console.log(event.pageX+" x event y "+event.pageY)
+    console.log(dom_mousedown_target.style.left+" x style y "+dom_mousedown_target.style.top)
+    console.log(int_mousedown_offsetX+" x offset y "+int_mousedown_offsetY)
 
     //cubliumイベントを実行
     run('trigger_mousedown');
 
     if (dom_mousedown_target.classList.contains('class_codeblock_source_mono')) { //右側のコピー元からコピーする時
+        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
         
         status_isdragging_codeblock_mono = true
 
         dom_dragging.classList.remove('class_codeblock_source_mono')
-        
+
         dom_codingspace.appendChild(dom_dragging)
 
-        dom_dragging.style.left = dom_mousedown_target.style.left //初期位置の設定
+        dom_dragging.offsetLeft = dom_mousedown_target.style.left //初期位置の設定
         dom_dragging.style.top = dom_mousedown_target.style.top
 
     } //ここまで"右側のコピー元からコピーする時"
 
     if (dom_mousedown_target.classList.contains('class_codeblock_mono')) { //ブロックを移動する時
+        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
         
         status_isdragging_codeblock_mono = true
 
         dom_dragging.classList.remove('class_codeblock_mono')
+        dom_dragging.classList.remove('class_codeblock_connectable')
         dom_dragging.removeEventListener('mouseenter', blank)
         dom_dragging.removeEventListener('mouseleave', blank)
         dom_codingspace.appendChild(dom_dragging)
@@ -79,6 +105,7 @@ document.onmousedown = function(event) {
 
     
     if (dom_mousedown_target.classList.contains('class_codeblock_source_trigger')) { //右側からトリガーをコピーする時
+        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
         
         status_isdragging_codeblock_trigger = true
 
@@ -94,15 +121,17 @@ document.onmousedown = function(event) {
 
 
     if (dom_mousedown_target.classList.contains('class_codeblock_trigger')) { //トリガーを移動する時
+        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
+        dom_mousedown_target.parentNode.remove() //必要なくなったrunninggroupを削除
         
         status_isdragging_codeblock_trigger = true
 
         dom_dragging.classList.remove('class_codeblock_trigger')
+        dom_dragging.classList.remove('class_codeblock_connectable')
         dom_dragging.removeEventListener('mouseenter', blank)
         dom_dragging.removeEventListener('mouseleave', blank)
         dom_codingspace.appendChild(dom_dragging)
 
-        dom_mousedown_target.parentNode.remove() //必要なくなったrunninggroupを削除
     } //ここまで"トリガーを移動する時"
 
 
@@ -110,6 +139,7 @@ document.onmousedown = function(event) {
 
 
     if (dom_mousedown_target.classList.contains('class_codeblock_source_quart')) { //右側のコピー元からifやforをコピーする時
+        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
         
         status_isdragging_codeblock_mono = true
 
@@ -124,10 +154,12 @@ document.onmousedown = function(event) {
     } //ifやforをコピーする時"
 
     if (dom_mousedown_target.classList.contains('class_codeblock_quart')) { //ifやforを移動する時
+        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
         
         status_isdragging_codeblock_mono = true
 
         dom_dragging.classList.remove('class_codeblock_quart')
+        dom_dragging.classList.remove('class_codeblock_connectable')
         dom_dragging.removeEventListener('mouseenter', blank)
         dom_dragging.removeEventListener('mouseleave', blank)
         dom_codingspace.appendChild(dom_dragging)
@@ -140,8 +172,9 @@ document.onmousedown = function(event) {
 
     //ここはonmousedownです
 
-
+/*
     if (dom_mousedown_target.classList.contains('class_codeblock_source_')) { //右側のコピー元から変数とかコピーする時
+        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
         
         status_isdragging_codeblock_mono = true
 
@@ -156,6 +189,7 @@ document.onmousedown = function(event) {
     } //ここまで"変数とかコピーする時"
 
     if (dom_mousedown_target.classList.contains('class_codeblock_')) { //ブロックを移動する時
+        dom_dragging = dom_mousedown_target.cloneNode(true) //子要素もcloneするからdeep=trues
         
         status_isdragging_codeblock_mono = true
 
@@ -168,7 +202,7 @@ document.onmousedown = function(event) {
         //ここ変える
 
         dom_mousedown_target.remove()
-    } //ここまで"変数とかを移動する時"
+    } //ここまで"変数とかを移動する時"*/
 }
 
 
@@ -181,7 +215,7 @@ document.onmousemove = function() {
 
     if (status_isclicking && ! status_connectready) { //ドラッグ中の位置移動(位置固定がない場合)
         dom_dragging.style.left = event.pageX - int_mousedown_offsetX
-        dom_dragging.style.up = event.pageY - int_mousedown_offsetY
+        dom_dragging.style.top = event.pageY - int_mousedown_offsetY
     }
 }
 
@@ -197,7 +231,8 @@ document.onmouseup = function() {
     run('trigger_mouseup');
 
     if (status_isdragging_codeblock_mono) { //ドラッグの終了
-        dom_stopdragging = dom_dragging.cloneNode()
+        dom_stopdragging = dom_dragging.cloneNode(true)
+        dom_dragging.remove()
         dom_stopdragging.addEventListener('mouseenter', mouseenterfunction)
         dom_stopdragging.addEventListener('mouseleave', mouseleavefunction)
         dom_stopdragging.classList.add('class_codeblock_mono')
@@ -214,17 +249,18 @@ document.onmouseup = function() {
     } //ここまでドラッグの終了
 
     if (status_isdragging_codeblock_trigger) { //トリガードラッグの終了
-        dom_stopdragging = dom_dragging.cloneNode()
+        dom_stopdragging = dom_dragging.cloneNode(true)
+        dom_dragging.remove()
         dom_stopdragging.addEventListener('mouseenter', mouseenterfunction)
         dom_stopdragging.addEventListener('mouseleave', mouseleavefunction)
-        dom_stopdragging.classList.add('class_codeblock_trigger')
-        dom_stopdragging.classList.add('class_codeblock_connectable')
 
         dom_runninggroup = document.createElement('div')
-        dom_runninggroup.classList.add(dom_stopdragging.name) //トリガーの継承を行う必要がある。
-        dom_runninggroup.classList.remove('block')
-        
+        dom_runninggroup.classList = dom_stopdragging.classList //トリガーの継承を行う必要がある。
         dom_runninggroup.appendChild(dom_stopdragging)
+
+        dom_stopdragging.classList.add('class_codeblock_trigger')
+        dom_stopdragging.classList.add('class_codeblock_connectable')
+        
         dom_codingspace.appendChild(dom_runninggroup)
     } //ここまでドラッグの終了
 }
@@ -264,19 +300,19 @@ var run = function run(trigger) {
     var run_triggered_array = Array.prototype.slice.call(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
         if (run_triggered.nodeName == 'DIV') {
-            function_run(dom_div_torun)
+            function_run(run_triggered)
         };
     });
 };
 
 //未整備
 var function_run = function function_run(dom_div_torun) {
-    dom_div_torun.children.forEach(dom_runningblock => { //子要素のそれぞれについて実行
+    html2array(dom_div_torun.children).forEach(dom_runningblock => { //子要素のそれぞれについて実行
 
         //整備済み
 
         if (dom_runningblock.classList.contains('class_monocodeblock_consolelog')) {
-            dom_runningblock.children.forEach(dom_temp_consolelog_run_children => {
+            html2array(dom_runningblock.children).forEach(dom_temp_consolelog_run_children => {
 
                 console.log(dom_temp_consolelog_run_children.textContent)
 
@@ -284,7 +320,7 @@ var function_run = function function_run(dom_div_torun) {
         }
         
         if (dom_runningblock.classList.contains('class_monocodeblock_alart')) {
-            dom_runningblock.children.forEach(dom_temp_alart_run_children => {
+            html2array(dom_runningblock.children).forEach(dom_temp_alart_run_children => {
 
                 alert(dom_temp_alart_run_children.textContent)
 
@@ -292,7 +328,7 @@ var function_run = function function_run(dom_div_torun) {
         }
         
         if (dom_runningblock.classList.contains('class_monocodeblock_eval')) {
-            dom_runningblock.children.forEach(dom_temp_eval_run_children => {
+            html2array(dom_runningblock.children).forEach(dom_temp_eval_run_children => {
 
                 eval(dom_temp_eval_run_children.textContent)
 
@@ -306,7 +342,7 @@ var function_run = function function_run(dom_div_torun) {
         }
         
         if (dom_runningblock.classList.contains('class_monocodeblock_changebackgroundcolor')) {
-            dom_runningblock.children.forEach(dom_temp_changebackgroundcolor_run_children => {
+            html2array(dom_runningblock.children).forEach(dom_temp_changebackgroundcolor_run_children => {
 
                 dom_exportspace.style.backgroundColor = dom_temp_changebackgroundcolor_run_children.value
 
@@ -319,13 +355,13 @@ var function_run = function function_run(dom_div_torun) {
         
         if (dom_runningblock.classList.contains('class_quartcodeblock_if')) {
 
-            dom_runningblock.children.forEach(dom_temp_if_run_children => {
+            html2array(dom_runningblock.children).forEach(dom_temp_if_run_children => {
                 if (dom_temp_if_run_children.classList.contains('class_insideif_condition')) {
                     dom_temp_if_run_condition = eval(dom_temp_if_run_children.name)
                 }
             })
 
-            dom_runningblock.children.forEach(dom_temp_if_run_children => {
+            html2array(dom_runningblock.children).forEach(dom_temp_if_run_children => {
                 if (dom_temp_if_run_condition && dom_temp_if_run_children.classList.contains('class_insideif_codetorun')) {
                     function_run(dom_temp_if_run_children);
                 }

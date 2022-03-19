@@ -1,0 +1,117 @@
+<! DOCTYPE html>
+<html lang=ja>
+    <head>
+        <meta charset="utf-8">
+        <title>testing</title>
+    </head>
+    <body>
+        <div id="css_body">
+
+            <div id="css_gen">
+                <div class='class_codeblock_source_mono class_monocodeblock_consolelog css_block' draggable="false">
+                    ログに<div class="insertable content" contenteditable="true">Hello, world!</div>と出力する
+                </div>
+                <br>
+                <br>
+                <div class='class_codeblock_source_mono class_monocodeblock_alart css_block' draggable="false">
+                    アラートに<div class="insertable content" contenteditable="true">Hello, world!</div>を表示する
+                </div>
+                <br>
+                <br>
+                <div class='class_codeblock_source_trigger trigger css_block' draggable="false">実行した時</div>
+                <br>
+                <br>
+                <div class='class_codeblock_source_trigger trigger_mousedown css_block' draggable="false">クリックしたとき</div>
+                <br>
+                <br>
+                <div class='class_codeblock_source_trigger trigger_mousemove css_block' draggable="false">マウスが動いたとき</div>
+                <br>
+                <br>
+                <div class='class_codeblock_source_trigger trigger_mouseup css_block' draggable="false">クリックを解除したとき</div>
+                <br>
+                <br>
+                <div class='class_codeblock_source_trigger trigger_Space css_block' draggable="false">
+                    <input type="button" value="Space" onclick="keydetect(this)">が押されたら
+                </div>
+                <br>
+                <br>
+                <div class='class_codeblock_source_mono class_monocodeblock_eval css_block' draggable="false">
+                    <div class="insertable content" contenteditable="true">console.log("Hello, world!")</div>を実行する
+                </div>
+                <br>
+                <br>
+                
+                <div class='class_codeblock_source_mono class_monocodeblock_changebackgroundcolor css_block' draggable="false">
+                    背景色を<input type="color">にする
+                </div>
+            </div>
+            <div id="work"></div>
+            <div id="display">
+                <input type="button" value="実行する" onclick="run('trigger')">
+            </div>
+        </div>
+        <script type="text/javascript" src="script.js"></script>
+        <style>
+            body {
+                position: relative;
+                user-select: none;
+                z-index: -1;
+            }
+            img {
+                position: absolute;
+                -webkit-user-drag: none;
+            }
+            div {
+                position: absolute;
+                -webkit-user-drag: none;
+            }
+            div.insertable {
+                position: relative;
+            }
+            #css_body {
+                position: relative;
+                float: left;
+                width: 100%;
+            }
+            #css_gen {
+                position: relative;
+                float: left;
+                width: 30%;
+                height: 100vh;
+                outline: solid;
+            }
+            #work {
+                position: relative;
+                float: left;
+                width: 50%;
+                height: 100vh;
+                outline: solid;
+            }
+            #display {
+                position: relative;
+                float: left;
+                width: 20%;
+                height: 100vh;
+                outline: solid;
+            }
+            .css_block {
+                display:flex;
+                white-space:nowrap;
+                background-color: orange;
+            }
+            .insertable {
+                min-width: 20px;
+                background-color: yellow;
+            }
+            div.if {
+                min-height: 50px;
+                min-width: 80px;
+                display:flex;
+            }
+            div.end {
+                position: relative;
+                align-items: flex-end;
+            }
+        </style>
+    </body>
+</html>

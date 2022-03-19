@@ -44,17 +44,25 @@
                 <br>
                 <br>
                 <div id="movegen" class='block event trigger_Space css_block' draggable="false">
-                    <input type="button" value="Space" onclick="kydytecto(this)">が押されたら
+                    <input type="button" value="Space" onclick="keydetect(this)">が押されたら
                 </div>
                 <br>
                 <br>
                 <div id="movegen" class='block if mouse' draggable="false">
                     <div class="css_block bypassint state"><div class="var" contenteditable="true">foo</div>なら</div>
+                    <br>
                     <div class="css_block bypassint end">を実行する</div>
                 </div>
                 <br>
                 <br>
-                <br>ファイルをアップロードする
+                <br>
+                <br>
+                <div id="movegen" class='block changebackgroundcolor css_block' draggable="false">
+                    背景色を<input type="color">にする
+                </div>
+                <br>
+                <br>
+                <!--<br>ファイルをアップロードする
                 <input type="file" id="inputfiles">
                 <br>
                 <br>
@@ -65,7 +73,7 @@
                 <br>
                 ファイル名:<input type="text" id="setimgtxt">
                 <input type="button" value="画像ブロックを生成する" onclick="namesetimg()">
-                <!--<br>
+                <br>
                 <br>
                 ログに出力する内容<input type="text" id="log">
                 <input type="button" value="logブロックを生成する" onclick="namesettxt()">-->
