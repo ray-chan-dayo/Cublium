@@ -193,7 +193,7 @@ document.onmousemove = function reload(event){
     run('trigger_mousemove');
 	if (status_dragging == true) {
         if (status_connectready != true) {
-            dom_dragging.offsetLeft = event.pageX - x + "px";
+            dom_dragging.style.left = event.pageX - x + "px";
             dom_dragging.style.top = event.pageY - y + "px";
         };
     };
