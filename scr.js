@@ -99,23 +99,6 @@ var mouseleavefunction = function mouseleavefunction() {
     deling = false;
 }
 var set = function set() {
-    var movesetdom = dom_dragging.cloneNode(true);
-    movesetdom.addEventListener('mouseenter', mouseenterfunction);
-    movesetdom.addEventListener('mouseleave', mouseleavefunction);
-    movesetdom.alt = 'move';
-    movesetdom.id = 'put'
-    movesetdom.classList.add('block');
-    if (status_connectready) {
-        dom_codeblock_toconnect.parentElement.appendChild(movesetdom);
-    }else {
-        let dom_runninggroup = document.createElement('div');
-        dom_runninggroup.classList = movesetdom.classList;
-        dom_runninggroup.classList.remove('block');
-        dom_runninggroup.classList.remove('event');
-        dom_runninggroup.appendChild(movesetdom);
-        work.appendChild(dom_runninggroup);
-    };
-    dragclass = [];
 };
 
 document.getElementById("css_gen").addEventListener('mouseenter', mouseenterfunction);
@@ -205,14 +188,32 @@ document.onmousemove = function reload(event){
 document.onmouseup = function () {
     run('trigger_mouseup');
     if (status_dragging == true) {
-        set();
-        var put = document.getElementById('put');
-        put.removeAttribute("id");
-        put.style.left = dom_dragging.style.left;
-        put.style.top = dom_dragging.style.top;
-        put.style.zIndex = 0;
+        var movesetdom = dom_dragging.cloneNode(true);
+        movesetdom.addEventListener('mouseenter', mouseenterfunction);
+        movesetdom.addEventListener('mouseleave', mouseleavefunction);
+        movesetdom.alt = 'move';
+        movesetdom.id = 'id_domput'
+        movesetdom.classList.add('block');
+        if (status_connectready) {
+            dom_codeblock_toconnect.parentElement.appendChild(movesetdom);
+        }else if(movesetdom.classList.contains("event")) {
+            let dom_runninggroup = document.createElement('div');
+            dom_runninggroup.classList = movesetdom.classList;
+            dom_runninggroup.classList.remove('block');
+            dom_runninggroup.classList.remove('event');
+            dom_runninggroup.appendChild(movesetdom);
+            work.appendChild(dom_runninggroup);
+        }else{
+            work.appendChild(movesetdom);
+        }
+        dragclass = [];
+        var dom_put = document.getElementById('id_domput');
+        dom_put.removeAttribute("id");
+        dom_put.style.left = dom_dragging.style.left;
+        dom_put.style.top = dom_dragging.style.top;
+        dom_put.style.zIndex = 0;
         if (deling) {
-            put.remove()
+            dom_put.remove()
         }
     };
     status_connectready = false;
@@ -252,31 +253,32 @@ var gencode = function gencode(trigger) {
     var run_triggered_array = toarray(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
         if (run_triggered.nodeName == 'DIV') {
-            var run_triggered_child_array = toarray(run_triggered.children);
-            run_triggered_child_array.forEach(run_triggered_child => {
+            var dom_runningblock_array = toarray(run_triggered.children);
+            dom_runningblock_array.forEach(dom_runningblock => {
                 /*
-                if (run_triggered_child.classList.contains('debug')) {
+                if (dom_runningblock.classList.contains('debug')) {
                     console.log("console.log('hello');");
                 };
                 */
-                if (run_triggered_child.classList.contains('setimg')) {
+                if (dom_runningblock.classList.contains('setimg')) {
                     var effect_setimg_element = document.createElement('img');
-                    effect_setimg_element.src = run_triggered_child.name;
+                    effect_setimg_element.src = dom_runningblock.name;
                     display.appendChild(effect_setimg_element);
                 };
                 /*
-                if (run_triggered_child.classList.contains('log')) {
-                    console.log("console.log('" + run_triggered_child.name + "');");
+                if (dom_runningblock.classList.contains('log')) {
+                    console.log("console.log('" + dom_runningblock.name + "');");
                 };
                 */
-                if (run_triggered_child.classList.contains('editablelog')) {
-                    toarray(run_triggered_child.children).forEach(inside_editablelog => {
-                        if (inside_editablelog.classList.contains('content'))
-                    console.log("console.log('" + inside_editablelog.value + "');"); 
+                if (dom_runningblock.classList.contains('editablelog')) {
+                    toarray(dom_runningblock.children).forEach(inside_editablelog => {
+                        if (inside_editablelog.classList.contains('content')){
+                            console.log("console.log('" + inside_editablelog.value + "');"); 
+                        }
                     });
                 };
-                if (run_triggered_child.classList.contains('set')) {
-                    toarray(run_triggered_child.children).forEach(inside_set => {
+                if (dom_runningblock.classList.contains('set')) {
+                    toarray(dom_runningblock.children).forEach(inside_set => {
                         if (inside_set.classList.contains('var')) {
                             set_var = inside_set.value;
                         };
@@ -296,92 +298,99 @@ var run = function run(trigger) {
     var run_triggered_array = toarray(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
         if (run_triggered.nodeName == 'DIV') {
-            var run_triggered_child_array = toarray(run_triggered.children);
-            run_triggered_child_array.forEach(run_triggered_child => {
-                if (run_triggered_child.classList.contains('debug')) {
-                    console.log('hello');
-                };
-                if (run_triggered_child.classList.contains('setimg')) {
-                    var effect_setimg_element = document.createElement('img');
-                    effect_setimg_element.src = run_triggered_child.name;
-                    display.appendChild(effect_setimg_element);
-                };
-                /*
-                if (run_triggered_child.classList.contains('log')) {
-                    console.log(run_triggered_child.name); 
-                };
-                */
-                if (run_triggered_child.classList.contains('editablelog')) {
-                    toarray(run_triggered_child.children).forEach(inside_editablelog => {
-                        console.log(inside_editablelog.textContent); 
-                    });
-                };
-                if (run_triggered_child.classList.contains('set')) {
-                    toarray(run_triggered_child.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('var')) {
-                            set_var = inside_set.textContent;
-                        };
-                        if (inside_set.classList.contains('content')) {
-                            set_content = inside_set.textContent;
-                        };
-                    });
-                    eval (set_var + "='" + set_content + "';");
-                };
-                if (run_triggered_child.classList.contains('classlist')) {
-                    toarray(run_triggered_child.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('mother')) {
-                            set_mother = inside_set.textContent;
-                        };
-                        if (inside_set.classList.contains('operation')) {
-                                set_operation = inside_set.value;
-                        };
-                        if (inside_set.classList.contains('content')) {
-                            set_content = inside_set.textContent;
-                        };
-                    eval (set_mother + '.' + set_operation + '(' + set_content + ');');
-                    });
-                };
-                if (run_triggered_child.classList.contains('eval')) {
-                    //console.log("aaa")
-                    toarray(run_triggered_child.children).forEach(inside_eval => {
-                        //console.log(inside_eval)
-                        eval(inside_eval.textContent);
-                    });
-                };
-                if (run_triggered_child.classList.contains('alert')) {
-                    toarray(run_triggered_child.children).forEach(inside_editablelog => {
-                        alert(inside_editablelog.textContent);
-                    });
-                };
-                if (run_triggered_child.classList.contains('changebackgroundcolor')) {
-                    toarray(run_triggered_child.children).forEach(inside_editablelog => {
-                        document.getElementById("display").style.backgroundColor=inside_editablelog.value;
-                    });
-                };
-                //no in HTML
-                if (run_triggered_child.classList.contains('appendchild')) {
-                    toarray(run_triggered_child.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('parent')) {
-                            set_parent = inside_set.value;
-                        };
-                        if (inside_set.classList.contains('child')) {
-                            set_child = inside_set.value;
-                        };
-                    });
-                    eval (set_parent + '.appendchild(' + set_child + ');');
-                };
-
-                if (run_triggered_child.classList.contains('custom')) {
-                    eval(run_triggered_child.name);
-                };
-                
-                if (run_triggered_child.classList.contains('a')) {
-                    eval(run_triggered_child.name);
-                };
-            });
+            function_run(run_triggered)
         };
     });
 };
+
+var function_run = function function_run(dom_div_torun) {
+    toarray(dom_div_torun.children).forEach(dom_runningblock => {
+        if (dom_runningblock.classList.contains('debug')) {
+            console.log('hello');
+        };
+        if (dom_runningblock.classList.contains('setimg')) {
+            var effect_setimg_element = document.createElement('img');
+            effect_setimg_element.src = dom_runningblock.name;
+            display.appendChild(effect_setimg_element);
+        };
+        /*
+        if (dom_runningblock.classList.contains('log')) {
+            console.log(dom_runningblock.name); 
+        };
+        */
+        if (dom_runningblock.classList.contains('editablelog')) {
+            toarray(dom_runningblock.children).forEach(inside_editablelog => {
+                console.log(inside_editablelog.textContent); 
+            });
+        };
+        if (dom_runningblock.classList.contains('set')) {
+            toarray(dom_runningblock.children).forEach(inside_set => {
+                if (inside_set.classList.contains('var')) {
+                    set_var = inside_set.textContent;
+                };
+                if (inside_set.classList.contains('content')) {
+                    set_content = inside_set.textContent;
+                };
+            });
+            eval (set_var + "='" + set_content + "';");
+        };
+        if (dom_runningblock.classList.contains('classlist')) {
+            toarray(dom_runningblock.children).forEach(inside_set => {
+                if (inside_set.classList.contains('mother')) {
+                    set_mother = inside_set.textContent;
+                };
+                if (inside_set.classList.contains('operation')) {
+                        set_operation = inside_set.value;
+                };
+                if (inside_set.classList.contains('content')) {
+                    set_content = inside_set.textContent;
+                };
+            eval (set_mother + '.' + set_operation + '(' + set_content + ');');
+            });
+        };
+        if (dom_runningblock.classList.contains('eval')) {
+            //console.log("aaa")
+            toarray(dom_runningblock.children).forEach(inside_eval => {
+                //console.log(inside_eval)
+                eval(inside_eval.textContent);
+            });
+        };
+        if (dom_runningblock.classList.contains('alert')) {
+            toarray(dom_runningblock.children).forEach(inside_editablelog => {
+                alert(inside_editablelog.textContent);
+            });
+        };
+        if (dom_runningblock.classList.contains('changebackgroundcolor')) {
+            toarray(dom_runningblock.children).forEach(inside_editablelog => {
+                document.getElementById("display").style.backgroundColor=inside_editablelog.value;
+            });
+        };
+        //no in HTML
+        if (dom_runningblock.classList.contains('appendchild')) {
+            toarray(dom_runningblock.children).forEach(inside_set => {
+                if (inside_set.classList.contains('parent')) {
+                    set_parent = inside_set.value;
+                };
+                if (inside_set.classList.contains('child')) {
+                    set_child = inside_set.value;
+                };
+            });
+            eval (set_parent + '.appendchild(' + set_child + ');');
+        };
+
+        if (dom_runningblock.classList.contains('custom')) {
+            eval(dom_runningblock.name);
+        };
+
+        if (dom_runningblock.classList.contains('custom')) {
+            eval(dom_runningblock.name);
+        };
+        
+        if (dom_runningblock.classList.contains('if')) {
+            function_run(dom_runningblock.children)
+        }
+    });
+}
 
 var keydetect = function keydetect(dom) {
     document.addEventListener('keydown', logKey);
