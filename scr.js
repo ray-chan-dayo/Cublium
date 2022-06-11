@@ -1,13 +1,3 @@
-
-/*CONFIG
-
-CCCC OOOO N  N FFFF III GGGG
-C    O  O NN N F     I  G
-C    O  O N NN FFF   I  G GG
-C    O  O N  N F     I  G  G
-CCCC OOOO N  N F    III GGGG
-
-*/
 const block_height = 25;
 
 
@@ -25,84 +15,22 @@ var set_var
 var set_content
 
 
-const toarray = function toarray(arg3) {
-    return Array.prototype.slice.call(arg3)
+const toarray = function toarray(arg) {
+    return Array.prototype.slice.call(arg)
 }
 
-
-/*
-
-CCCC L    OOOO N  N EEEE
-C    L    O  O NN N E
-C    L    O  O N NN EEE
-C    L    O  O N  N E
-CCCC LLLL OOOO N  N EEEE
-
-*/
-/*
-var set = function set() {
-    let smove = document.createElement('img');
-    //<event>
-    smove.addEventListener('mouseenter', function (event) {
-        //console.log ("dom_codeblock_toconnect");
-        //console.log (event.target);
-        //console.log (event.target.classList);
-        if (event.target.classList.contains('block')) {
-            if (!dom_dragging.classList.contains('event')) {
-                status_connectready = true;
-                dom_codeblock_toconnect = this;
-                dom_dragging.style.left = event.target.offsetLeft + "px";
-                dom_dragging.style.top = event.target.offsetTop + 100 + "px";
-                //console.log ("dom_codeblock_toconnectcollect");
-            };
-        };
-    });
-    smove.addEventListener('mouseleave', function(event) {
-        //console.log ("dom_codeblock_toconnectend");
-        status_connectready = false;
-        dom_codeblock_toconnect = null;
-    });
-    //</event>
-    smove.src = dom_dragging.src;
-    smove.name = dom_dragging.name;
-    smove.alt = 'move';
-    smove.id = 'put'
-    var dragclass = toarray(dom_dragging.classList);
-    dragclass.forEach(dom_draggingc => {
-        if (dom_draggingc != 'event') {
-            smove.classList.add(dom_draggingc);
-        };
-    });
-    smove.classList.add('block')
-    dom_dragging.classList = [];
-    if (!status_connectready) {
-        let dom_runninggroup = document.createElement('div');
-        if (dragclass.includes('event')) {
-            dragclass.forEach(dom_draggingdivc => {
-                if (dom_draggingdivc != 'event') {
-                    if (dom_draggingdivc != 'block') {
-                        dom_runninggroup.classList.add(dom_draggingdivc);
-                    };
-                };
-            });
-        };
-        dom_runninggroup.appendChild(smove);
-        work.appendChild(dom_runninggroup);
-    }else {
-        dom_codeblock_toconnect.parentElement.appendChild(smove);
-    };
-    dragclass = [];
-};*/
 var mouseleavefunction = function mouseleavefunction() {
     status_connectready = false;
     dom_codeblock_toconnect = null;
     deling = false;
 }
+
+
 var set = function set() {
+
 };
 
-document.getElementById("css_gen").addEventListener('mouseenter', mouseenterfunction);
-document.getElementById("css_gen").addEventListener('mouseleave', mouseleavefunction);
+
 
 var mouseenterfunction = function(event) {
     if (event.target.classList.contains('block') && !dom_dragging.classList.contains('event') && status_dragging) {
@@ -120,45 +48,56 @@ var mouseenterfunction = function(event) {
     if (event.target.classList.contains('deleteblocks')) {
         deling = true;
         dom_codeblock_toconnect = this;
+        console.log("tetete")
     };
 };
 
-
+/*
+document.getElementById("css_gen").addEventListener('mouseenter', mouseenterfunction);
+document.getElementById("css_gen").addEventListener('mouseleave', mouseleavefunction);
+*/
 
 document.onmousedown = function(event) {
     run('trigger_mousedown');
 
     status_connectready = false;
     if (event.target.classList.contains('block')) {
-        var movecopydom = event.target.cloneNode(true);
-        if (movecopydom.removeEventListener('mouseenter', mouseenterfunction)) {
-            movecopydom.removeEventListener('mouseleave', mouseleavefunction)
+        var dom_temp_clickcopy = event.target.cloneNode(true);
+        if (dom_temp_clickcopy.removeEventListener('mouseenter', mouseenterfunction)) {
+            dom_temp_clickcopy.removeEventListener('mouseleave', mouseleavefunction)
         };
-        movecopydom.classList.remove('block');
-        movecopydom.id = 'move';
-        work.appendChild(movecopydom);
+        dom_temp_clickcopy.classList.remove('block');
+        dom_temp_clickcopy.id = 'move';
+        work.appendChild(dom_temp_clickcopy);
         dom_dragging = document.getElementById("move");
         x = event.pageX - event.target.offsetLeft;
         y = event.pageY - event.target.offsetTop;
         status_dragging = true;
-        dom_dragging.style.zIndex = -1;
-        //もう使わないdivの削除
-        if (event.target.id != 'movegen'){
-		    var ray_cub_clone_parent=event.target.parentNode;
+        dom_dragging.style.zIndex = 1;
+        if (event.target.id == 'movegen'){
+            //位置の調整
+            x = x + 300
+            dom_dragging.style.left = event.pageX - x + "px";
+            dom_dragging.style.top = event.pageY - y + "px";
+        }else{
+            //もう使わないdivの削除
+		    var ray_cub_clone_parent = event.target.parentNode;
 		    event.target.remove()
 		    if (ray_cub_clone_parent.children.length==0) {
 		        ray_cub_clone_parent.remove();
 		    };
         };
     };
+    
+    //未実装
     if (event.target.classList.contains('lium')) {
-        var movecopydom = event.target.cloneNode(true);
-        if (movecopydom.removeEventListener('mouseenter', mouseenterfunction)) {
-            movecopydom.removeEventListener('mouseleave', mouseleavefunction)
+        var dom_temp_clickcopy = event.target.cloneNode(true);
+        if (dom_temp_clickcopy.removeEventListener('mouseenter', mouseenterfunction)) {
+            dom_temp_clickcopy.removeEventListener('mouseleave', mouseleavefunction)
         };
-        movecopydom.classList.remove('block');
-        movecopydom.id = 'move';
-        work.appendChild(movecopydom);
+        dom_temp_clickcopy.classList.remove('block');
+        dom_temp_clickcopy.id = 'move';
+        work.appendChild(dom_temp_clickcopy);
         dom_dragging = document.getElementById("move");
         x = event.pageX - event.target.offsetLeft;
         y = event.pageY - event.target.offsetTop;
@@ -172,7 +111,7 @@ document.onmousedown = function(event) {
 
 
 
-document.onmousemove = function reload(event){
+document.onmousemove = function reload(event) {
     run('trigger_mousemove');
 	if (status_dragging == true) {
         if (status_connectready != true) {
@@ -211,7 +150,7 @@ document.onmouseup = function () {
         dom_put.removeAttribute("id");
         dom_put.style.left = dom_dragging.style.left;
         dom_put.style.top = dom_dragging.style.top;
-        dom_put.style.zIndex = 0;
+        dom_put.style.zIndex = 2;
         if (deling) {
             dom_put.remove()
         }
@@ -221,33 +160,6 @@ document.onmouseup = function () {
     dom_dragging.remove();
     dom_codeblock_toconnect = null;
 };
-/*
-var testrun = function testrun() {
-    var runner = toarray(document.getElementsByClassName('testtrigger'));
-    console.log (runner);
-    runner.forEach(sprunner => {
-        if (sprunner.nodeName == 'DIV') {
-            console.log(sprunner);
-            var inrunner = toarray(sprunner.children);
-            inrunner.forEach(insiderunner => {
-                console.log (insiderunner.classList);
-                if (insiderunner.classList.contains('debug')) {
-                    console.log ("debug");
-                };
-                if (insiderunner.classList.contains('move')) {
-                    console.log ("move");
-                };
-                if (insiderunner.classList.contains('setimg')) {
-                    console.log ("setimg");
-                };
-                if (insiderunner.classList.contains('blos')) {
-                    console.log ("blos");
-                };
-            });
-        };
-    });
-};
-*/
 
 var gencode = function gencode(trigger) {
     var run_triggered_array = toarray(document.getElementsByClassName(trigger));
@@ -295,6 +207,7 @@ var gencode = function gencode(trigger) {
 };
 
 var run = function run(trigger) {
+    //console.log("run"+trigger) //t
     var run_triggered_array = toarray(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
         if (run_triggered.nodeName == 'DIV') {
@@ -305,24 +218,27 @@ var run = function run(trigger) {
 
 var function_run = function function_run(dom_div_torun) {
     toarray(dom_div_torun.children).forEach(dom_runningblock => {
+
         if (dom_runningblock.classList.contains('debug')) {
             console.log('hello');
         };
-        if (dom_runningblock.classList.contains('setimg')) {
+        
+        if (dom_runningblock.classList.contains('setimg')) { //temporary disabled
             var effect_setimg_element = document.createElement('img');
             effect_setimg_element.src = dom_runningblock.name;
             display.appendChild(effect_setimg_element);
         };
-        /*
-        if (dom_runningblock.classList.contains('log')) {
+
+        if (dom_runningblock.classList.contains('log_legacy')) {
             console.log(dom_runningblock.name); 
         };
-        */
+
         if (dom_runningblock.classList.contains('editablelog')) {
             toarray(dom_runningblock.children).forEach(inside_editablelog => {
                 console.log(inside_editablelog.textContent); 
             });
         };
+
         if (dom_runningblock.classList.contains('set')) {
             toarray(dom_runningblock.children).forEach(inside_set => {
                 if (inside_set.classList.contains('var')) {
@@ -334,6 +250,7 @@ var function_run = function function_run(dom_div_torun) {
             });
             eval (set_var + "='" + set_content + "';");
         };
+
         if (dom_runningblock.classList.contains('classlist')) {
             toarray(dom_runningblock.children).forEach(inside_set => {
                 if (inside_set.classList.contains('mother')) {
@@ -348,23 +265,26 @@ var function_run = function function_run(dom_div_torun) {
             eval (set_mother + '.' + set_operation + '(' + set_content + ');');
             });
         };
+
         if (dom_runningblock.classList.contains('eval')) {
-            //console.log("aaa")
+            dom_runningblock.getElementById('')
             toarray(dom_runningblock.children).forEach(inside_eval => {
-                //console.log(inside_eval)
                 eval(inside_eval.textContent);
             });
         };
+
         if (dom_runningblock.classList.contains('alert')) {
             toarray(dom_runningblock.children).forEach(inside_editablelog => {
                 alert(inside_editablelog.textContent);
             });
         };
+
         if (dom_runningblock.classList.contains('changebackgroundcolor')) {
             toarray(dom_runningblock.children).forEach(inside_editablelog => {
-                document.getElementById("display").style.backgroundColor=inside_editablelog.value;
+                document.getElementById("display").style.backgroundColor = inside_editablelog.value;
             });
         };
+
         //no in HTML
         if (dom_runningblock.classList.contains('appendchild')) {
             toarray(dom_runningblock.children).forEach(inside_set => {
@@ -381,13 +301,44 @@ var function_run = function function_run(dom_div_torun) {
         if (dom_runningblock.classList.contains('custom')) {
             eval(dom_runningblock.name);
         };
-
-        if (dom_runningblock.classList.contains('custom')) {
-            eval(dom_runningblock.name);
-        };
+        
+        if (dom_runningblock.classList.contains('callevent')) {
+            toarray(dom_runningblock.getElementsByClassName('eventname')).forEach(dom_temp_callevent => {
+                run("trigger_custom_" + dom_temp_callevent.textContent)
+            })
+        }
+        
+        if (dom_runningblock.classList.contains('if_legacy')) {
+            toarray(dom_runningblock.children).forEach(dom_temp_iflegacy => {
+                if (dom_temp_iflegacy.classList.contains('condition')) {
+                    bool_temp_iflegacycondition = eval(dom_temp_iflegacy.textContent)
+                    console.log(bool_temp_iflegacycondition)
+                }
+                if (dom_temp_iflegacy.classList.contains('eventname')) {
+                    dom_temp_iflegacyeventname = dom_temp_iflegacy.textContent
+                    console.log(dom_temp_iflegacyeventname)
+                }
+            })
+            if (bool_temp_iflegacycondition) {
+                run('trigger_custom_' + dom_temp_iflegacyeventname)
+            }
+        }
         
         if (dom_runningblock.classList.contains('if')) {
-            function_run(dom_runningblock.children)
+            toarray(dom_runningblock.children).forEach(dom_temp_if => {
+                if (dom_temp_if.classList.contains('condition')) {
+                    bool_temp_ifcondition = eval(dom_temp_if.value)
+                }
+                if (dom_temp_if.classList.contains('flow')) {
+                    dom_temp_ifflow = dom_temp_if
+                }
+                if (dom_temp_if.classList.contains('else')) {
+                    dom_temp_ifelse = dom_temp_if
+                }
+                if (dom_temp_if.classList.contains('endif')) {
+                    dom_temp_ifendif = dom_temp_if
+                }
+            })
         }
     });
 }
@@ -406,12 +357,23 @@ var keydetect = function keydetect(dom) {
         var keydetect_class = "trigger_" + event.code;
         eval("dom.parentNode.classList.add('"+keydetect_class+"');");
         eval("dom.parentNode.parentNode.classList.add('"+keydetect_class+"');");
+        dom.parentNode.className = ""+keydetect_class
+        dom.parentNode.parentNode.className = ""+keydetect_class
     }
 }
 
 document.onkeydown = function keypress(event) {
     eval("run('trigger_"+event.code+"')");
 }
+
+
+
+
+let eventchange = function eventchange(dom) {
+    dom.parentNode.className = "block event css_block trigger_custom_ " + dom.textContent
+    dom.parentNode.parentNode.className = "trigger_custom_" + dom.textContent
+}
+
 
 //var inputFile = document.getElementById('inputfiles');
 //inputFile.addEventListener("change", function(event) {
