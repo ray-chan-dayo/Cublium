@@ -90,11 +90,12 @@
                 <input type="button" value="logブロックを生成する" onclick="namesettxt()">-->
             </div>
             <div id="work"></div>
-            <div id="display">
+            <div id="debug">
                 <input type="button" value="実行する" onclick="run('trigger')">
+                <canvas id="display">
             </div>
         </div>
-        <script type="text/javascript" src="scr.js"></script>
+        <script type="text/javascript" src="scripts/lang.js"></script>
         <style>
             body {
                 position: relative;
@@ -132,7 +133,7 @@
                 height: 100vh;
                 outline: solid;
             }
-            #display {
+            #debug {
                 position: relative;
                 float: left;
                 width: 20%;
