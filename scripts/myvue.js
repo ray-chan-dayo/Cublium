@@ -1,5 +1,5 @@
 Vue.component('hello-vue', {
-    template: '<div id="header">HEAD</div>',
+    template: '<div id="header"><div id="prod_name">HEAD</div></div>',
 })
 
 var app = new Vue({
@@ -8,4 +8,3 @@ var app = new Vue({
         message: 'Hello, Vue!'
     }
 })
-
