@@ -11,8 +11,6 @@ let dom_codeblock_toconnect = null;
 let dom_dragging = null;
 let deling = false;
 const grop = document.createElement('div');
-let set_var
-let set_content
 
 
 const toarray = function toarray(arg) {
@@ -25,6 +23,14 @@ const mouseleavefunction = function mouseleavefunction() {
     deling = false;
 }
 
+function getargs(arg_parent, arg_classname) {
+    const temp_classElem = arg_parent.getElementsByClassName(arg_classname)
+    for ( let ind = 0; ind < temp_classElem.length; ind++ ) {
+        if ( temp_classElem[ind].parentNode === arg_parent ) {
+            return temp_classElem[ind]
+        }
+    }
+}
 
 const set = function set() {
 
@@ -233,66 +239,39 @@ const run = function run(trigger) {
 };
 
 const function_run = function function_run(dom_div_torun) {
-    toarray(dom_div_torun.children).forEach(dom_runningblock => {
-
-        if (dom_runningblock.classList.contains('debug')) {
-            console.log('hello');
-        };
+    for (let linenum = 0; linenum < dom_div_torun.children.length; linenum++) {
         
-        if (dom_runningblock.classList.contains('setimg')) { //temporary disabled
-            var effect_setimg_element = document.createElement('img');
-            effect_setimg_element.src = dom_runningblock.name;
-            display.appendChild(effect_setimg_element);
-        };
-
-        if (dom_runningblock.classList.contains('log_legacy')) {
-            console.log(dom_runningblock.name); 
-        };
+        const dom_runningblock = dom_div_torun.children[linenum]
 
         if (dom_runningblock.classList.contains('editablelog')) {
-            toarray(dom_runningblock.children).forEach(inside_editablelog => {
-                console.log(inside_editablelog.textContent); 
-            });
+
+            const content = getargs(dom_runningblock, "content")
+
+            console.log(content.textContent);
         };
 
         if (dom_runningblock.classList.contains('set')) {
-            toarray(dom_runningblock.children).forEach(inside_set => {
-                if (inside_set.classList.contains('var')) {
-                    set_var = inside_set.textContent;
-                };
-                if (inside_set.classList.contains('content')) {
-                    set_content = inside_set.textContent;
-                };
-            });
-            eval (set_var + "='" + set_content + "';");
+
+            const vari = getargs(dom_runningblock, "var")
+            const content = getargs(dom_runningblock, "content")
+
+            eval( vari + "='" + content + "';");
         };
 
         if (dom_runningblock.classList.contains('classlist')) {
-            toarray(dom_runningblock.children).forEach(inside_set => {
-                if (inside_set.classList.contains('mother')) {
-                    set_mother = inside_set.textContent;
-                };
-                if (inside_set.classList.contains('operation')) {
-                        set_operation = inside_set.value;
-                };
-                if (inside_set.classList.contains('content')) {
-                    set_content = inside_set.textContent;
-                };
-            eval (set_mother + '.' + set_operation + '(' + set_content + ');');
-            });
-        };
 
-        if (dom_runningblock.classList.contains('eval')) {
-            dom_runningblock.getElementById('')
-            toarray(dom_runningblock.children).forEach(inside_eval => {
-                eval(inside_eval.textContent);
-            });
+            const parent = getargs(dom_runningblock, "parent")
+            const operation = getargs(dom_runningblock, "operation")
+            const content = getargs(dom_runningblock, "content")
+
+            eval(parent + '.' + operation + '(' + content + ');');
         };
 
         if (dom_runningblock.classList.contains('alert')) {
-            toarray(dom_runningblock.children).forEach(inside_editablelog => {
-                alert(inside_editablelog.textContent);
-            });
+
+            const content = getargs(dom_runningblock, "content")
+
+            alert(content);
         };
 
         if (dom_runningblock.classList.contains('changebackgroundcolor')) {
@@ -300,8 +279,24 @@ const function_run = function function_run(dom_div_torun) {
                 document.getElementById("debug").style.backgroundColor = inside_editablelog.value;
             });
         };
+        
+        if (dom_runningblock.classList.contains('callevent')) {
+            toarray(dom_runningblock.getElementsByClassName('eventname')).forEach(dom_temp_callevent => {
+                run("trigger_custom_" + dom_temp_callevent.textContent)
+            })
+        }
+        
+        if (dom_runningblock.classList.contains('if_legacy')) {
 
-        //no in HTML
+            const condition = getargs(dom_runningblock, "condition")
+            const eventname = getargs(dom_runningblock, "eventname")
+
+            if (condition) {
+                run('trigger_custom_' + eventname)
+            }
+        }
+
+        //=== unavailable blocks from here ===
         if (dom_runningblock.classList.contains('appendchild')) {
             toarray(dom_runningblock.children).forEach(inside_set => {
                 if (inside_set.classList.contains('parent')) {
@@ -317,28 +312,27 @@ const function_run = function function_run(dom_div_torun) {
         if (dom_runningblock.classList.contains('custom')) {
             eval(dom_runningblock.name);
         };
+
+        if (dom_runningblock.classList.contains('eval')) {
+            dom_runningblock.getElementById('')
+            toarray(dom_runningblock.children).forEach(inside_eval => {
+                eval(inside_eval.textContent);
+            });
+        };
         
-        if (dom_runningblock.classList.contains('callevent')) {
-            toarray(dom_runningblock.getElementsByClassName('eventname')).forEach(dom_temp_callevent => {
-                run("trigger_custom_" + dom_temp_callevent.textContent)
-            })
-        }
+        if (dom_runningblock.classList.contains('debug')) { //disabled
+            console.log('Hello, world!');
+        };
         
-        if (dom_runningblock.classList.contains('if_legacy')) {
-            toarray(dom_runningblock.children).forEach(dom_temp_iflegacy => {
-                if (dom_temp_iflegacy.classList.contains('condition')) {
-                    bool_temp_iflegacycondition = eval(dom_temp_iflegacy.textContent)
-                    console.log(bool_temp_iflegacycondition)
-                }
-                if (dom_temp_iflegacy.classList.contains('eventname')) {
-                    dom_temp_iflegacyeventname = dom_temp_iflegacy.textContent
-                    console.log(dom_temp_iflegacyeventname)
-                }
-            })
-            if (bool_temp_iflegacycondition) {
-                run('trigger_custom_' + dom_temp_iflegacyeventname)
-            }
-        }
+        if (dom_runningblock.classList.contains('setimg')) { //temporary disabled
+            var effect_setimg_element = document.createElement('img');
+            effect_setimg_element.src = dom_runningblock.name;
+            display.appendChild(effect_setimg_element);
+        };
+
+        if (dom_runningblock.classList.contains('log_legacy')) { //disabled
+            console.log(dom_runningblock.name);
+        };
         
         if (dom_runningblock.classList.contains('if')) {
             toarray(dom_runningblock.children).forEach(dom_temp_if => {
@@ -356,18 +350,16 @@ const function_run = function function_run(dom_div_torun) {
                 }
             })
         }
-    });
+
+    }
 }
 
 var keydetect = function keydetect(dom) {
     document.addEventListener('keydown', logKey);
-    console.log(dom.value);
     var keydetect_class = "trigger_" + dom.value;
-    console.log(keydetect_class);
     eval("dom.parentNode.classList.remove('"+keydetect_class+"');");
     eval("dom.parentNode.parentNode.classList.remove('"+keydetect_class+"');");
     function logKey(event) {
-        console.log(event.code);
         dom.value = event.code;
         document.removeEventListener('keydown', logKey);
         var keydetect_class = "trigger_" + event.code;
