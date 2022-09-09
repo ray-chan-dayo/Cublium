@@ -12,7 +12,7 @@ let trush = false;
 const grop = document.createElement('div');
 
 
-const toarray = function toarray(arg) {
+function toarray(arg) {
     return Array.prototype.slice.call(arg);
 }
 
@@ -24,14 +24,14 @@ const mouseleavefunction = function mouseleavefunction() {
 
 function getargs(arg_parent, arg_classname) {
     const temp_classElem = arg_parent.getElementsByClassName(arg_classname)
-    for ( let ind = 0; ind < temp_classElem.length; ind++ ) {
-        if ( temp_classElem[ind].parentNode === arg_parent ) {
-            return temp_classElem[ind];
+    for ( let i = 0; i < temp_classElem.length; i++ ) {
+        if ( temp_classElem[i].parentNode === arg_parent ) {
+            return temp_classElem[i];
         }
     }
 }
 
-const set = function set() {
+function set() {
 
 };
 
@@ -134,7 +134,7 @@ document.onmousedown = function(event) {
 
 
 
-document.onmousemove = function reload(event) {
+document.onmousemove = function (event) {
     run('trigger_mousemove');
 	if (status_dragging == true) {
         if (status_connectready != true) {
@@ -184,73 +184,75 @@ document.onmouseup = function () {
     dom_codeblock_toconnect = null;
 };
 
-const run = function run(trigger) {
-    //console.log("run"+trigger) //t
-    var run_triggered_array = toarray(document.getElementsByClassName(trigger));
-    run_triggered_array.forEach(run_triggered => {
-        if (run_triggered.nodeName == 'DIV') {
-            function_run(run_triggered)
+function run(trigger) {
+    const array = document.getElementsByClassName(trigger);
+    for (let i = 0; i < array.length; i++) {
+        const element = array[i];
+        if (element.nodeName == 'DIV') {
+            function_run(element)
         };
-    });
+    };
 };
 
-const function_run = function function_run(dom_div_torun) {
+function function_run(dom_div_torun) {
     for (let linenum = 0; linenum < dom_div_torun.children.length; linenum++) {
         
-        const dom_runningblock = dom_div_torun.children[linenum]
+        const dom_runningblock = dom_div_torun.children[linenum];
 
         if (dom_runningblock.classList.contains('editablelog')) {
 
-            const content = getargs(dom_runningblock, "content")
+            const content = getargs(dom_runningblock, "content").textContent;
 
             console.log(content.textContent);
         };
 
         if (dom_runningblock.classList.contains('set')) {
 
-            const vari = getargs(dom_runningblock, "var")
-            const content = getargs(dom_runningblock, "content")
+            const name = getargs(dom_runningblock, "name").textContent;
+            const content = getargs(dom_runningblock, "content").textContent;
 
-            eval( vari + "='" + content + "';");
+            eval( name + "='" + content + "';");
         };
 
-        if (dom_runningblock.classList.contains('classlist')) {
+        if (dom_runningblock.classList.contains('array')) {
 
-            const parent = getargs(dom_runningblock, "parent")
-            const operation = getargs(dom_runningblock, "operation")
-            const content = getargs(dom_runningblock, "content")
+            const parent = getargs(dom_runningblock, "parent").textContent;
+            const operation = getargs(dom_runningblock, "operation").textContent;
+            const content = getargs(dom_runningblock, "content").textContent;
 
             eval(parent + '.' + operation + '(' + content + ');');
         };
 
         if (dom_runningblock.classList.contains('alert')) {
 
-            const content = getargs(dom_runningblock, "content")
+            const content = getargs(dom_runningblock, "content").textContent;
 
             alert(content);
         };
 
         if (dom_runningblock.classList.contains('changebackgroundcolor')) {
-            toarray(dom_runningblock.children).forEach(inside_editablelog => {
-                document.getElementById("debug").style.backgroundColor = inside_editablelog.value;
-            });
+
+            const color = getargs(dom_runningblock, "condition").value;
+
+            document.getElementById("debug").style.backgroundColor = color;
         };
         
         if (dom_runningblock.classList.contains('callevent')) {
-            toarray(dom_runningblock.getElementsByClassName('eventname')).forEach(dom_temp_callevent => {
-                run("trigger_custom_" + dom_temp_callevent.textContent)
-            })
-        }
+
+            const name = getargs(dom_runningblock, "name").textContent;
+
+            run("trigger_custom_" + name);
+        };
         
         if (dom_runningblock.classList.contains('if_legacy')) {
 
-            const condition = getargs(dom_runningblock, "condition")
-            const eventname = getargs(dom_runningblock, "eventname")
+            const condition = eval(getargs(dom_runningblock, "condition").textContent);
+            const eventname = getargs(dom_runningblock, "eventname").textContent;
 
             if (condition) {
-                run('trigger_custom_' + eventname)
-            }
-        }
+                run('trigger_custom_' + eventname);
+            };
+        };
 
         //=== unavailable blocks from here ===
         if (dom_runningblock.classList.contains('appendchild')) {
@@ -310,7 +312,7 @@ const function_run = function function_run(dom_div_torun) {
     }
 }
 
-var keydetect = function keydetect(dom) {
+function keydetect(dom) {
     document.addEventListener('keydown', logKey);
     var keydetect_class = "trigger_" + dom.value;
     eval("dom.parentNode.classList.remove('"+keydetect_class+"');");
