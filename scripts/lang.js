@@ -8,26 +8,25 @@ let y;
 let status_dragging;
 let status_connectready;
 let dom_codeblock_toconnect = null;
-let dom_dragging = null;
-let deling = false;
+let trush = false;
 const grop = document.createElement('div');
 
 
 const toarray = function toarray(arg) {
-    return Array.prototype.slice.call(arg)
+    return Array.prototype.slice.call(arg);
 }
 
 const mouseleavefunction = function mouseleavefunction() {
     status_connectready = false;
     dom_codeblock_toconnect = null;
-    deling = false;
+    trush = false;
 }
 
 function getargs(arg_parent, arg_classname) {
     const temp_classElem = arg_parent.getElementsByClassName(arg_classname)
     for ( let ind = 0; ind < temp_classElem.length; ind++ ) {
         if ( temp_classElem[ind].parentNode === arg_parent ) {
-            return temp_classElem[ind]
+            return temp_classElem[ind];
         }
     }
 }
@@ -39,7 +38,7 @@ const set = function set() {
 
 
 const mouseenterfunction = function(event) {
-    dom_mouseover = event.target
+    const dom_mouseover = event.target;
 
     if (dom_mouseover.classList.contains('block') && !dom_dragging.classList.contains('event') && status_dragging) {
         status_connectready = true;
@@ -49,7 +48,7 @@ const mouseenterfunction = function(event) {
     };
 
     //未使用
-    if (event.target.classList.contains('insertable') && !dom_dragging.classList.contains('event') && liumstatus_dragging) {
+    if (dom_mouseover.classList.contains('insertable') && !dom_dragging.classList.contains('event') && liumstatus_dragging) {
         liumstatus_connectready = true;
         dom_codeblock_toconnect = this;
         dom_dragging.style.left = event.target.offsetLeft + "px";
@@ -57,12 +56,14 @@ const mouseenterfunction = function(event) {
     };
 
     //未使用
-    if (event.target.classList.contains('deleteblocks')) {
-        deling = true;
-        dom_codeblock_toconnect = this;
-        console.log("tetete")
+    if (dom_mouseover.contains('trashcan') && status_dragging) {
+        trush = true;
+        console.log("tetete");
     };
 };
+
+
+
 
 
 document.onmousedown = function(event) {
@@ -80,7 +81,7 @@ document.onmousedown = function(event) {
 
         //不要なものを削除
         if (dom_temp_clickcopy.removeEventListener('mouseenter', mouseenterfunction)) {
-            dom_temp_clickcopy.removeEventListener('mouseleave', mouseleavefunction)
+            dom_temp_clickcopy.removeEventListener('mouseleave', mouseleavefunction);
         };
         dom_temp_clickcopy.classList.remove('block');
 
@@ -96,14 +97,14 @@ document.onmousedown = function(event) {
         x = event.pageX - event.target.offsetLeft;
         y = event.pageY - event.target.offsetTop;
         if (event.target.id == 'movegen'){
-            x = x + 300
+            x = x + 300;
             dom_dragging.style.left = event.pageX - x + "px";
             dom_dragging.style.top = event.pageY - y + "px";
 
         }else{
             //もう使わないdivの削除
 		    const dom_temp_clickparent = event.target.parentNode;
-		    event.target.remove()
+		    event.target.remove();
 		    if (dom_temp_clickparent.children.length==0) {
 		        dom_temp_clickparent.remove();
 		    };
@@ -115,7 +116,7 @@ document.onmousedown = function(event) {
     if (event.target.classList.contains('lium')) {
         var dom_temp_clickcopy = event.target.cloneNode(true);
         if (dom_temp_clickcopy.removeEventListener('mouseenter', mouseenterfunction)) {
-            dom_temp_clickcopy.removeEventListener('mouseleave', mouseleavefunction)
+            dom_temp_clickcopy.removeEventListener('mouseleave', mouseleavefunction);
         };
         dom_temp_clickcopy.classList.remove('block');
         dom_temp_clickcopy.id = 'move';
@@ -153,7 +154,7 @@ document.onmouseup = function () {
         movesetdom.addEventListener('mouseenter', mouseenterfunction);
         movesetdom.addEventListener('mouseleave', mouseleavefunction);
         movesetdom.alt = 'move';
-        movesetdom.id = 'id_domput'
+        movesetdom.id = 'id_domput';
         movesetdom.classList.add('block');
         if (status_connectready) {
             dom_codeblock_toconnect.parentElement.appendChild(movesetdom);
@@ -173,59 +174,14 @@ document.onmouseup = function () {
         dom_put.style.left = dom_dragging.style.left;
         dom_put.style.top = dom_dragging.style.top;
         dom_put.style.zIndex = 2;
-        if (deling) {
-            dom_put.remove()
+        if (trush) {
+            dom_put.remove();
         }
     };
     status_connectready = false;
     status_dragging = false;
     dom_dragging.remove();
     dom_codeblock_toconnect = null;
-};
-
-const gencode = function gencode(trigger) {
-    var run_triggered_array = toarray(document.getElementsByClassName(trigger));
-    run_triggered_array.forEach(run_triggered => {
-        if (run_triggered.nodeName == 'DIV') {
-            var dom_runningblock_array = toarray(run_triggered.children);
-            dom_runningblock_array.forEach(dom_runningblock => {
-                /*
-                if (dom_runningblock.classList.contains('debug')) {
-                    console.log("console.log('hello');");
-                };
-                */
-                if (dom_runningblock.classList.contains('setimg')) {
-                    var effect_setimg_element = document.createElement('img');
-                    effect_setimg_element.src = dom_runningblock.name;
-                    display.appendChild(effect_setimg_element);
-                };
-                /*
-                if (dom_runningblock.classList.contains('log')) {
-                    console.log("console.log('" + dom_runningblock.name + "');");
-                };
-                */
-                if (dom_runningblock.classList.contains('editablelog')) {
-                    toarray(dom_runningblock.children).forEach(inside_editablelog => {
-                        if (inside_editablelog.classList.contains('content')){
-                            console.log("console.log('" + inside_editablelog.value + "');"); 
-                        }
-                    });
-                };
-                if (dom_runningblock.classList.contains('set')) {
-                    toarray(dom_runningblock.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('var')) {
-                            set_var = inside_set.value;
-                        };
-                        if (inside_set.classList.contains('contents')) {
-                            set_content = inside_set.value;
-                        };
-                    });
-                    console.log(set_var + "=" + set_content + ";");
-                };
-            });
-        };
-    });
-    console.log("end of line");
 };
 
 const run = function run(trigger) {
@@ -381,6 +337,52 @@ let eventchange = function eventchange(dom) {
     dom.parentNode.className = "block event css_block trigger_custom_ " + dom.textContent
     dom.parentNode.parentNode.className = "trigger_custom_" + dom.textContent
 }
+
+//unused
+const gencode = function gencode(trigger) {
+    var run_triggered_array = toarray(document.getElementsByClassName(trigger));
+    run_triggered_array.forEach(run_triggered => {
+        if (run_triggered.nodeName == 'DIV') {
+            var dom_runningblock_array = toarray(run_triggered.children);
+            dom_runningblock_array.forEach(dom_runningblock => {
+                /*
+                if (dom_runningblock.classList.contains('debug')) {
+                    console.log("console.log('hello');");
+                };
+                */
+                if (dom_runningblock.classList.contains('setimg')) {
+                    var effect_setimg_element = document.createElement('img');
+                    effect_setimg_element.src = dom_runningblock.name;
+                    display.appendChild(effect_setimg_element);
+                };
+                /*
+                if (dom_runningblock.classList.contains('log')) {
+                    console.log("console.log('" + dom_runningblock.name + "');");
+                };
+                */
+                if (dom_runningblock.classList.contains('editablelog')) {
+                    toarray(dom_runningblock.children).forEach(inside_editablelog => {
+                        if (inside_editablelog.classList.contains('content')){
+                            console.log("console.log('" + inside_editablelog.value + "');"); 
+                        }
+                    });
+                };
+                if (dom_runningblock.classList.contains('set')) {
+                    toarray(dom_runningblock.children).forEach(inside_set => {
+                        if (inside_set.classList.contains('var')) {
+                            set_var = inside_set.value;
+                        };
+                        if (inside_set.classList.contains('contents')) {
+                            set_content = inside_set.value;
+                        };
+                    });
+                    console.log(set_var + "=" + set_content + ";");
+                };
+            });
+        };
+    });
+    console.log("end of line");
+};
 
 
 //var inputFile = document.getElementById('inputfiles');
