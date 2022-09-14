@@ -3,12 +3,12 @@ const block_height = 25;
 
 
 
-let x;
-let y;
-let status_dragging;
-let status_connectready;
-let dom_codeblock_toconnect = null;
-let trush = false;
+let x,
+    y,
+    status_dragging,
+    status_connectready,
+    dom_codeblock_toconnect = null,
+    trush = false;
 const grop = document.createElement('div');
 
 
@@ -47,7 +47,7 @@ const mouseenterfunction = function(event) {
         dom_dragging.style.top = event.target.offsetTop + block_height + "px";
     };
 
-    //未使用
+    /*//未使用
     if (dom_mouseover.classList.contains('insertable') && !dom_dragging.classList.contains('event') && liumstatus_dragging) {
         liumstatus_connectready = true;
         dom_codeblock_toconnect = this;
@@ -59,7 +59,7 @@ const mouseenterfunction = function(event) {
     if (dom_mouseover.contains('trashcan') && status_dragging) {
         trush = true;
         console.log("tetete");
-    };
+    };*/
 };
 
 
@@ -199,26 +199,27 @@ function function_run(dom_div_torun) {
         
         const dom_runningblock = dom_div_torun.children[linenum];
 
+        //ログにcontentを出力する。
         if (dom_runningblock.classList.contains('editablelog')) {
 
             const content = getargs(dom_runningblock, "content").textContent;
 
-            console.log(content.textContent);
+            console.log(content);
         };
 
         if (dom_runningblock.classList.contains('set')) {
 
-            const name = getargs(dom_runningblock, "name").textContent;
-            const content = getargs(dom_runningblock, "content").textContent;
+            const name = getargs(dom_runningblock, "name").textContent,
+                content = getargs(dom_runningblock, "content").textContent;
 
             eval( name + "='" + content + "';");
         };
 
         if (dom_runningblock.classList.contains('array')) {
 
-            const parent = getargs(dom_runningblock, "parent").textContent;
-            const operation = getargs(dom_runningblock, "operation").textContent;
-            const content = getargs(dom_runningblock, "content").textContent;
+            const parent = getargs(dom_runningblock, "parent").textContent,
+                operation = getargs(dom_runningblock, "operation").textContent,
+                content = getargs(dom_runningblock, "content").textContent;
 
             eval(parent + '.' + operation + '(' + content + ');');
         };
@@ -246,8 +247,8 @@ function function_run(dom_div_torun) {
         
         if (dom_runningblock.classList.contains('if_legacy')) {
 
-            const condition = eval(getargs(dom_runningblock, "condition").textContent);
-            const eventname = getargs(dom_runningblock, "eventname").textContent;
+            const condition = eval(getargs(dom_runningblock, "condition").textContent),
+                eventname = getargs(dom_runningblock, "eventname").textContent;
 
             if (condition) {
                 run('trigger_custom_' + eventname);
