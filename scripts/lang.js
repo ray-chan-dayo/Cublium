@@ -10,7 +10,7 @@ let x,
     trush = false,
     domDragging = null;
 
-const domWorkspace = getElementById("work")
+const domWorkspace = document.getElementById("work")
 
 const mouseleavefunction = function mouseleavefunction() {
     isConnectable = false;
