@@ -132,7 +132,6 @@ document.onmouseup = function () {
         }else{
             work.appendChild(domPlacing);
         }
-        dragclass = [];
         var dom_put = document.getElementById('id_domput');
         dom_put.removeAttribute("id");
         dom_put.style.left = domDragging.style.left;
@@ -224,16 +223,17 @@ function function_run(groupToRun) {
 function keydetect(dom) {
     document.addEventListener('keydown', logKey);
     var keydetect_class = "trigger_" + dom.value;
-    eval("dom.parentNode.classList.remove('"+keydetect_class+"');");
-    eval("dom.parentNode.parentNode.classList.remove('"+keydetect_class+"');");
+
+    dom.parentNode.classList.remove(keydetect_class);
+    dom.parentNode.parentNode.classList.remove(keydetect_class);
+
     function logKey(event) {
         dom.value = event.code;
         document.removeEventListener('keydown', logKey);
         var keydetect_class = "trigger_" + event.code;
-        eval("dom.parentNode.classList.add('"+keydetect_class+"');");
-        eval("dom.parentNode.parentNode.classList.add('"+keydetect_class+"');");
-        dom.parentNode.className = ""+keydetect_class
-        dom.parentNode.parentNode.className = ""+keydetect_class
+
+        dom.parentNode.classList.add(keydetect_class);
+        dom.parentNode.parentNode.classList.add(keydetect_class);
     }
 }
 
