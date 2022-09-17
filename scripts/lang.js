@@ -2,7 +2,6 @@ const block_height = 25;
 
 
 
-
 let x,
     y,
     isDragging,
@@ -26,12 +25,6 @@ function getargs(parent, classname) {
         }
     }
 }
-
-function set() {
-
-};
-
-
 
 const mouseenterfunction = function(event) {
     const dom_mouseover = event.target;
