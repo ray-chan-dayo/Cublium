@@ -5,28 +5,24 @@ const block_height = 25;
 
 let x,
     y,
-    status_dragging,
-    status_connectready,
-    dom_codeblock_toconnect = null,
+    isDragging,
+    isConnectable,
+    domConnectTo = null,
     trush = false;
-const grop = document.createElement('div');
 
 
-function toarray(arg) {
-    return Array.prototype.slice.call(arg);
-}
 
 const mouseleavefunction = function mouseleavefunction() {
-    status_connectready = false;
-    dom_codeblock_toconnect = null;
+    isConnectable = false;
+    domConnectTo = null;
     trush = false;
 }
 
 function getargs(arg_parent, arg_classname) {
-    const temp_classElem = arg_parent.getElementsByClassName(arg_classname)
-    for ( let i = 0; i < temp_classElem.length; i++ ) {
-        if ( temp_classElem[i].parentNode === arg_parent ) {
-            return temp_classElem[i];
+    const tempArray = arg_parent.getElementsByClassName(arg_classname)
+    for ( let i = 0; i < tempArray.length; i++ ) {
+        if ( tempArray[i].parentNode === arg_parent ) {
+            return tempArray[i];
         }
     }
 }
@@ -40,23 +36,23 @@ function set() {
 const mouseenterfunction = function(event) {
     const dom_mouseover = event.target;
 
-    if (dom_mouseover.classList.contains('block') && !dom_dragging.classList.contains('event') && status_dragging) {
-        status_connectready = true;
-        dom_codeblock_toconnect = this;
-        dom_dragging.style.left = event.target.offsetLeft + "px";
-        dom_dragging.style.top = event.target.offsetTop + block_height + "px";
+    if (dom_mouseover.classList.contains('block') && !domDragging.classList.contains('event') && isDragging) {
+        isConnectable = true;
+        domConnectTo = this;
+        domDragging.style.left = event.target.offsetLeft + "px";
+        domDragging.style.top = event.target.offsetTop + block_height + "px";
     };
 
     /*//未使用
-    if (dom_mouseover.classList.contains('insertable') && !dom_dragging.classList.contains('event') && liumstatus_dragging) {
-        liumstatus_connectready = true;
-        dom_codeblock_toconnect = this;
-        dom_dragging.style.left = event.target.offsetLeft + "px";
-        dom_dragging.style.top = event.target.offsetTop + block_height + "px";
+    if (dom_mouseover.classList.contains('insertable') && !domDragging.classList.contains('event') && liumisDragging) {
+        liumisConnectable = true;
+        domConnectTo = this;
+        domDragging.style.left = event.target.offsetLeft + "px";
+        domDragging.style.top = event.target.offsetTop + block_height + "px";
     };
 
     //未使用
-    if (dom_mouseover.contains('trashcan') && status_dragging) {
+    if (dom_mouseover.contains('trashcan') && isDragging) {
         trush = true;
         console.log("tetete");
     };*/
@@ -72,25 +68,25 @@ document.onmousedown = function(event) {
     run('trigger_mousedown');
 
     //init
-    status_connectready = false;
+    isConnectable = false;
 
 
     if (event.target.classList.contains('block')) {
 
-        const dom_temp_clickcopy = event.target.cloneNode(true);
+        const domCopying = event.target.cloneNode(true);
 
         //不要なものを削除
-        if (dom_temp_clickcopy.removeEventListener('mouseenter', mouseenterfunction)) {
-            dom_temp_clickcopy.removeEventListener('mouseleave', mouseleavefunction);
+        if (domCopying.removeEventListener('mouseenter', mouseenterfunction)) {
+            domCopying.removeEventListener('mouseleave', mouseleavefunction);
         };
-        dom_temp_clickcopy.classList.remove('block');
+        domCopying.classList.remove('block');
 
-        dom_temp_clickcopy.id = 'move';
-        work.appendChild(dom_temp_clickcopy);
-        dom_dragging = document.getElementById("move");
-        dom_dragging.style.zIndex = 1;
+        domCopying.id = 'move';
+        work.appendChild(domCopying);
+        domDragging = document.getElementById("move");
+        domDragging.style.zIndex = 1;
         
-        status_dragging = true;
+        isDragging = true;
 
 
         //位置の調整
@@ -98,8 +94,8 @@ document.onmousedown = function(event) {
         y = event.pageY - event.target.offsetTop;
         if (event.target.id == 'movegen'){
             x = x + 300;
-            dom_dragging.style.left = event.pageX - x + "px";
-            dom_dragging.style.top = event.pageY - y + "px";
+            domDragging.style.left = event.pageX - x + "px";
+            domDragging.style.top = event.pageY - y + "px";
 
         }else{
             //もう使わないdivの削除
@@ -114,18 +110,18 @@ document.onmousedown = function(event) {
 
     //未実装
     if (event.target.classList.contains('lium')) {
-        var dom_temp_clickcopy = event.target.cloneNode(true);
-        if (dom_temp_clickcopy.removeEventListener('mouseenter', mouseenterfunction)) {
-            dom_temp_clickcopy.removeEventListener('mouseleave', mouseleavefunction);
+        var domCopying = event.target.cloneNode(true);
+        if (domCopying.removeEventListener('mouseenter', mouseenterfunction)) {
+            domCopying.removeEventListener('mouseleave', mouseleavefunction);
         };
-        dom_temp_clickcopy.classList.remove('block');
-        dom_temp_clickcopy.id = 'move';
-        work.appendChild(dom_temp_clickcopy);
-        dom_dragging = document.getElementById("move");
+        domCopying.classList.remove('block');
+        domCopying.id = 'move';
+        work.appendChild(domCopying);
+        domDragging = document.getElementById("move");
         x = event.pageX - event.target.offsetLeft;
         y = event.pageY - event.target.offsetTop;
-        liumstatus_dragging = true;
-        dom_dragging.style.zIndex = -1;
+        liumisDragging = true;
+        domDragging.style.zIndex = -1;
         if (event.target.id != 'movegen'){
             event.target.remove();
         };
@@ -136,10 +132,10 @@ document.onmousedown = function(event) {
 
 document.onmousemove = function (event) {
     run('trigger_mousemove');
-	if (status_dragging == true) {
-        if (status_connectready != true) {
-            dom_dragging.style.left = event.pageX - x + "px";
-            dom_dragging.style.top = event.pageY - y + "px";
+	if (isDragging == true) {
+        if (isConnectable != true) {
+            domDragging.style.left = event.pageX - x + "px";
+            domDragging.style.top = event.pageY - y + "px";
         };
     };
 };
@@ -148,40 +144,49 @@ document.onmousemove = function (event) {
 
 //
 document.onmouseup = function () {
+
     run('trigger_mouseup');
-    if (status_dragging == true) {
-        var movesetdom = dom_dragging.cloneNode(true);
-        movesetdom.addEventListener('mouseenter', mouseenterfunction);
-        movesetdom.addEventListener('mouseleave', mouseleavefunction);
-        movesetdom.alt = 'move';
-        movesetdom.id = 'id_domput';
-        movesetdom.classList.add('block');
-        if (status_connectready) {
-            dom_codeblock_toconnect.parentElement.appendChild(movesetdom);
-        }else if(movesetdom.classList.contains("event")) {
-            let dom_runninggroup = document.createElement('div');
-            dom_runninggroup.classList = movesetdom.classList;
-            dom_runninggroup.classList.remove('block');
-            dom_runninggroup.classList.remove('event');
-            dom_runninggroup.appendChild(movesetdom);
-            work.appendChild(dom_runninggroup);
+
+    if (isDragging == true) {
+
+        let domPlacing = domDragging.cloneNode(true);
+        domPlacing.addEventListener('mouseenter', mouseenterfunction);
+        domPlacing.addEventListener('mouseleave', mouseleavefunction);
+        domPlacing.alt = 'move';
+        domPlacing.id = 'id_domput';
+        domPlacing.classList.add('block');
+
+        if (isConnectable) {
+
+            domConnectTo.parentElement.appendChild(domPlacing);
+
+        }else if(domPlacing.classList.contains("event")) {
+
+            let domTriggerGroup = document.createElement('div');
+            domTriggerGroup.classList = domPlacing.classList;
+            domTriggerGroup.classList.remove('block');
+            domTriggerGroup.classList.remove('event');
+            domTriggerGroup.appendChild(domPlacing);
+
+            work.appendChild(domTriggerGroup);
+
         }else{
-            work.appendChild(movesetdom);
+            work.appendChild(domPlacing);
         }
         dragclass = [];
         var dom_put = document.getElementById('id_domput');
         dom_put.removeAttribute("id");
-        dom_put.style.left = dom_dragging.style.left;
-        dom_put.style.top = dom_dragging.style.top;
+        dom_put.style.left = domDragging.style.left;
+        dom_put.style.top = domDragging.style.top;
         dom_put.style.zIndex = 2;
         if (trush) {
             dom_put.remove();
         }
     };
-    status_connectready = false;
-    status_dragging = false;
-    dom_dragging.remove();
-    dom_codeblock_toconnect = null;
+    isConnectable = false;
+    isDragging = false;
+    domDragging.remove();
+    domConnectTo = null;
 };
 
 function run(trigger) {
@@ -194,61 +199,61 @@ function run(trigger) {
     };
 };
 
-function function_run(dom_div_torun) {
-    for (let linenum = 0; linenum < dom_div_torun.children.length; linenum++) {
+function function_run(groupToRun) {
+    for (let linenum = 0; linenum < groupToRun.children.length; linenum++) {
         
-        const dom_runningblock = dom_div_torun.children[linenum];
+        const blockActive = groupToRun.children[linenum];
 
         //ログにcontentを出力する。
-        if (dom_runningblock.classList.contains('editablelog')) {
+        if (blockActive.classList.contains('editablelog')) {
 
-            const content = getargs(dom_runningblock, "content").textContent;
+            const content = getargs(blockActive, "content").textContent;
 
             console.log(content);
         };
 
-        if (dom_runningblock.classList.contains('set')) {
+        if (blockActive.classList.contains('set')) {
 
-            const name = getargs(dom_runningblock, "name").textContent,
-                content = getargs(dom_runningblock, "content").textContent;
+            const name = getargs(blockActive, "name").textContent,
+                content = getargs(blockActive, "content").textContent;
 
             eval( name + "='" + content + "';");
         };
 
-        if (dom_runningblock.classList.contains('array')) {
+        if (blockActive.classList.contains('array')) {
 
-            const parent = getargs(dom_runningblock, "parent").textContent,
-                operation = getargs(dom_runningblock, "operation").textContent,
-                content = getargs(dom_runningblock, "content").textContent;
+            const parent = getargs(blockActive, "parent").textContent,
+                operation = getargs(blockActive, "operation").value,
+                content = getargs(blockActive, "content").textContent;
 
             eval(parent + '.' + operation + '(' + content + ');');
         };
 
-        if (dom_runningblock.classList.contains('alert')) {
+        if (blockActive.classList.contains('alert')) {
 
-            const content = getargs(dom_runningblock, "content").textContent;
+            const content = getargs(blockActive, "content").textContent;
 
             alert(content);
         };
 
-        if (dom_runningblock.classList.contains('changebackgroundcolor')) {
+        if (blockActive.classList.contains('changebackgroundcolor')) {
 
-            const color = getargs(dom_runningblock, "condition").value;
+            const color = getargs(blockActive, "condition").value;
 
             document.getElementById("debug").style.backgroundColor = color;
         };
         
-        if (dom_runningblock.classList.contains('callevent')) {
+        if (blockActive.classList.contains('callevent')) {
 
-            const name = getargs(dom_runningblock, "name").textContent;
+            const name = getargs(blockActive, "name").textContent;
 
             run("trigger_custom_" + name);
         };
         
-        if (dom_runningblock.classList.contains('if_legacy')) {
+        if (blockActive.classList.contains('if_legacy')) {
 
-            const condition = eval(getargs(dom_runningblock, "condition").textContent),
-                eventname = getargs(dom_runningblock, "eventname").textContent;
+            const condition = eval(getargs(blockActive, "condition").textContent),
+                eventname = getargs(blockActive, "eventname").textContent;
 
             if (condition) {
                 run('trigger_custom_' + eventname);
@@ -256,8 +261,8 @@ function function_run(dom_div_torun) {
         };
 
         //=== unavailable blocks from here ===
-        if (dom_runningblock.classList.contains('appendchild')) {
-            toarray(dom_runningblock.children).forEach(inside_set => {
+        if (blockActive.classList.contains('appendchild')) {
+            toarray(blockActive.children).forEach(inside_set => {
                 if (inside_set.classList.contains('parent')) {
                     set_parent = inside_set.value;
                 };
@@ -268,33 +273,33 @@ function function_run(dom_div_torun) {
             eval (set_parent + '.appendchild(' + set_child + ');');
         };
 
-        if (dom_runningblock.classList.contains('custom')) {
-            eval(dom_runningblock.name);
+        if (blockActive.classList.contains('custom')) {
+            eval(blockActive.name);
         };
 
-        if (dom_runningblock.classList.contains('eval')) {
-            dom_runningblock.getElementById('')
-            toarray(dom_runningblock.children).forEach(inside_eval => {
+        if (blockActive.classList.contains('eval')) {
+            blockActive.getElementById('')
+            toarray(blockActive.children).forEach(inside_eval => {
                 eval(inside_eval.textContent);
             });
         };
         
-        if (dom_runningblock.classList.contains('debug')) { //disabled
+        if (blockActive.classList.contains('debug')) { //disabled
             console.log('Hello, world!');
         };
         
-        if (dom_runningblock.classList.contains('setimg')) { //temporary disabled
+        if (blockActive.classList.contains('setimg')) { //temporary disabled
             var effect_setimg_element = document.createElement('img');
-            effect_setimg_element.src = dom_runningblock.name;
+            effect_setimg_element.src = blockActive.name;
             display.appendChild(effect_setimg_element);
         };
 
-        if (dom_runningblock.classList.contains('log_legacy')) { //disabled
-            console.log(dom_runningblock.name);
+        if (blockActive.classList.contains('log_legacy')) { //disabled
+            console.log(blockActive.name);
         };
         
-        if (dom_runningblock.classList.contains('if')) {
-            toarray(dom_runningblock.children).forEach(dom_temp_if => {
+        if (blockActive.classList.contains('if')) {
+            toarray(blockActive.children).forEach(dom_temp_if => {
                 if (dom_temp_if.classList.contains('condition')) {
                     bool_temp_ifcondition = eval(dom_temp_if.value)
                 }
@@ -346,32 +351,32 @@ const gencode = function gencode(trigger) {
     var run_triggered_array = toarray(document.getElementsByClassName(trigger));
     run_triggered_array.forEach(run_triggered => {
         if (run_triggered.nodeName == 'DIV') {
-            var dom_runningblock_array = toarray(run_triggered.children);
-            dom_runningblock_array.forEach(dom_runningblock => {
+            var blockActive_array = toarray(run_triggered.children);
+            blockActive_array.forEach(blockActive => {
                 /*
-                if (dom_runningblock.classList.contains('debug')) {
+                if (blockActive.classList.contains('debug')) {
                     console.log("console.log('hello');");
                 };
                 */
-                if (dom_runningblock.classList.contains('setimg')) {
+                if (blockActive.classList.contains('setimg')) {
                     var effect_setimg_element = document.createElement('img');
-                    effect_setimg_element.src = dom_runningblock.name;
+                    effect_setimg_element.src = blockActive.name;
                     display.appendChild(effect_setimg_element);
                 };
                 /*
-                if (dom_runningblock.classList.contains('log')) {
-                    console.log("console.log('" + dom_runningblock.name + "');");
+                if (blockActive.classList.contains('log')) {
+                    console.log("console.log('" + blockActive.name + "');");
                 };
                 */
-                if (dom_runningblock.classList.contains('editablelog')) {
-                    toarray(dom_runningblock.children).forEach(inside_editablelog => {
+                if (blockActive.classList.contains('editablelog')) {
+                    toarray(blockActive.children).forEach(inside_editablelog => {
                         if (inside_editablelog.classList.contains('content')){
                             console.log("console.log('" + inside_editablelog.value + "');"); 
                         }
                     });
                 };
-                if (dom_runningblock.classList.contains('set')) {
-                    toarray(dom_runningblock.children).forEach(inside_set => {
+                if (blockActive.classList.contains('set')) {
+                    toarray(blockActive.children).forEach(inside_set => {
                         if (inside_set.classList.contains('var')) {
                             set_var = inside_set.value;
                         };
