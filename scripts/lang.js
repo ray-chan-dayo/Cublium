@@ -42,20 +42,6 @@ const mouseenterfunction = function(event) {
         domDragging.style.left = event.target.offsetLeft + "px";
         domDragging.style.top = event.target.offsetTop + block_height + "px";
     };
-
-    /*//未使用
-    if (dom_mouseover.classList.contains('insertable') && !domDragging.classList.contains('event') && liumisDragging) {
-        liumisConnectable = true;
-        domConnectTo = this;
-        domDragging.style.left = event.target.offsetLeft + "px";
-        domDragging.style.top = event.target.offsetTop + block_height + "px";
-    };
-
-    //未使用
-    if (dom_mouseover.contains('trashcan') && isDragging) {
-        trush = true;
-        console.log("tetete");
-    };*/
 };
 
 
@@ -99,10 +85,10 @@ document.onmousedown = function(event) {
 
         }else{
             //もう使わないdivの削除
-		    const dom_temp_clickparent = event.target.parentNode;
+		    const domParentTemp = event.target.parentNode;
 		    event.target.remove();
-		    if (dom_temp_clickparent.children.length==0) {
-		        dom_temp_clickparent.remove();
+		    if (domParentTemp.children.length==0) {
+		        domParentTemp.remove();
 		    };
         };
     };
@@ -259,62 +245,6 @@ function function_run(groupToRun) {
                 run('trigger_custom_' + eventname);
             };
         };
-
-        //=== unavailable blocks from here ===
-        if (blockActive.classList.contains('appendchild')) {
-            toarray(blockActive.children).forEach(inside_set => {
-                if (inside_set.classList.contains('parent')) {
-                    set_parent = inside_set.value;
-                };
-                if (inside_set.classList.contains('child')) {
-                    set_child = inside_set.value;
-                };
-            });
-            eval (set_parent + '.appendchild(' + set_child + ');');
-        };
-
-        if (blockActive.classList.contains('custom')) {
-            eval(blockActive.name);
-        };
-
-        if (blockActive.classList.contains('eval')) {
-            blockActive.getElementById('')
-            toarray(blockActive.children).forEach(inside_eval => {
-                eval(inside_eval.textContent);
-            });
-        };
-        
-        if (blockActive.classList.contains('debug')) { //disabled
-            console.log('Hello, world!');
-        };
-        
-        if (blockActive.classList.contains('setimg')) { //temporary disabled
-            var effect_setimg_element = document.createElement('img');
-            effect_setimg_element.src = blockActive.name;
-            display.appendChild(effect_setimg_element);
-        };
-
-        if (blockActive.classList.contains('log_legacy')) { //disabled
-            console.log(blockActive.name);
-        };
-        
-        if (blockActive.classList.contains('if')) {
-            toarray(blockActive.children).forEach(dom_temp_if => {
-                if (dom_temp_if.classList.contains('condition')) {
-                    bool_temp_ifcondition = eval(dom_temp_if.value)
-                }
-                if (dom_temp_if.classList.contains('flow')) {
-                    dom_temp_ifflow = dom_temp_if
-                }
-                if (dom_temp_if.classList.contains('else')) {
-                    dom_temp_ifelse = dom_temp_if
-                }
-                if (dom_temp_if.classList.contains('endif')) {
-                    dom_temp_ifendif = dom_temp_if
-                }
-            })
-        }
-
     }
 }
 
@@ -345,87 +275,3 @@ let eventchange = function eventchange(dom) {
     dom.parentNode.className = "block event css_block trigger_custom_ " + dom.textContent
     dom.parentNode.parentNode.className = "trigger_custom_" + dom.textContent
 }
-
-//unused
-const gencode = function gencode(trigger) {
-    var run_triggered_array = toarray(document.getElementsByClassName(trigger));
-    run_triggered_array.forEach(run_triggered => {
-        if (run_triggered.nodeName == 'DIV') {
-            var blockActive_array = toarray(run_triggered.children);
-            blockActive_array.forEach(blockActive => {
-                /*
-                if (blockActive.classList.contains('debug')) {
-                    console.log("console.log('hello');");
-                };
-                */
-                if (blockActive.classList.contains('setimg')) {
-                    var effect_setimg_element = document.createElement('img');
-                    effect_setimg_element.src = blockActive.name;
-                    display.appendChild(effect_setimg_element);
-                };
-                /*
-                if (blockActive.classList.contains('log')) {
-                    console.log("console.log('" + blockActive.name + "');");
-                };
-                */
-                if (blockActive.classList.contains('editablelog')) {
-                    toarray(blockActive.children).forEach(inside_editablelog => {
-                        if (inside_editablelog.classList.contains('content')){
-                            console.log("console.log('" + inside_editablelog.value + "');"); 
-                        }
-                    });
-                };
-                if (blockActive.classList.contains('set')) {
-                    toarray(blockActive.children).forEach(inside_set => {
-                        if (inside_set.classList.contains('var')) {
-                            set_var = inside_set.value;
-                        };
-                        if (inside_set.classList.contains('contents')) {
-                            set_content = inside_set.value;
-                        };
-                    });
-                    console.log(set_var + "=" + set_content + ";");
-                };
-            });
-        };
-    });
-    console.log("end of line");
-};
-
-
-//var inputFile = document.getElementById('inputfiles');
-//inputFile.addEventListener("change", function(event) {
-//    if (event.target.file.type == 'javascript') {
-//        var reader = new FileReader();
-//        reader.readAsText(event.target.file);
-//        reader.onload = function() {
-//            se = "/*" + reader.result.replace("console.log('hello')", "*/ gen('debug'); /*").replace("setimg()", "*/gen('setimg');/*").replace(";", ";/*") + "*/".replace("}", "};/*") + "*/";
-//            eval(se);
-//        };
-//    }else {
-//        var reader = new FileReader();
-//        reader.readAsText(event.target.file);
-//        reader.onload = function() {
-//            eval("var FILE_" + event.target.file.name + " = event.target.file;");
-//        };
-//    };
-//},false);
-/*
-var namesetimg_element = document.createElement('img');
-namesetimg_element.src = "pic.png"
-namesetimg_element.classList.add('block');
-namesetimg_element.classList.add('setimg');
-var namesetimg = function namesetimg() {
-    namesetimg_element.name = document.getElementById("setimgtxt").value;
-    work.appendChild(namesetimg_element);
-};
-/*
-var log_element = document.createElement('img');
-log_element.src = "log.png";
-log_element.classList.add('block');
-log_element.classList.add('log');
-var namesettxt = function namesettxt() {
-    log_element.name = document.getElementById("log").value;
-    work.appendChild(log_element);
-};
-*/
