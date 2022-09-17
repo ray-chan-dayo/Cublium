@@ -18,10 +18,10 @@ const mouseleavefunction = function mouseleavefunction() {
     trush = false;
 }
 
-function getargs(arg_parent, arg_classname) {
-    const tempArray = arg_parent.getElementsByClassName(arg_classname)
+function getargs(parent, classname) {
+    const tempArray = parent.getElementsByClassName(classname)
     for ( let i = 0; i < tempArray.length; i++ ) {
-        if ( tempArray[i].parentNode === arg_parent ) {
+        if ( tempArray[i].parentNode === parent ) {
             return tempArray[i];
         }
     }
