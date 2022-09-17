@@ -92,26 +92,6 @@ document.onmousedown = function(event) {
 		    };
         };
     };
-    
-
-    //未実装
-    if (event.target.classList.contains('lium')) {
-        var domCopying = event.target.cloneNode(true);
-        if (domCopying.removeEventListener('mouseenter', mouseenterfunction)) {
-            domCopying.removeEventListener('mouseleave', mouseleavefunction);
-        };
-        domCopying.classList.remove('block');
-        domCopying.id = 'move';
-        work.appendChild(domCopying);
-        domDragging = document.getElementById("move");
-        x = event.pageX - event.target.offsetLeft;
-        y = event.pageY - event.target.offsetTop;
-        liumisDragging = true;
-        domDragging.style.zIndex = -1;
-        if (event.target.id != 'movegen'){
-            event.target.remove();
-        };
-    };
 };
 
 
