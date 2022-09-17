@@ -1,29 +1,21 @@
 const block_height = 25;
 
 
-
+//変数定義
 let x,
     y,
     isDragging,
     isConnectable,
     domConnectTo = null,
-    trush = false;
+    trush = false,
+    domDragging = null;
 
-
+const domWorkspace = getElementById("work")
 
 const mouseleavefunction = function mouseleavefunction() {
     isConnectable = false;
     domConnectTo = null;
     trush = false;
-}
-
-function getargs(parent, classname) {
-    const tempArray = parent.getElementsByClassName(classname)
-    for ( let i = 0; i < tempArray.length; i++ ) {
-        if ( tempArray[i].parentNode === parent ) {
-            return tempArray[i];
-        }
-    }
 }
 
 const mouseenterfunction = function(event) {
@@ -61,7 +53,7 @@ document.onmousedown = function(event) {
         domCopying.classList.remove('block');
 
         domCopying.id = 'move';
-        work.appendChild(domCopying);
+        domWorkspace.appendChild(domCopying);
         domDragging = document.getElementById("move");
         domDragging.style.zIndex = 1;
         
@@ -127,10 +119,10 @@ document.onmouseup = function () {
             domTriggerGroup.classList.remove('event');
             domTriggerGroup.appendChild(domPlacing);
 
-            work.appendChild(domTriggerGroup);
+            domWorkspace.appendChild(domTriggerGroup);
 
         }else{
-            work.appendChild(domPlacing);
+            domWorkspace.appendChild(domPlacing);
         }
         var dom_put = document.getElementById('id_domput');
         dom_put.removeAttribute("id");
@@ -147,12 +139,23 @@ document.onmouseup = function () {
     domConnectTo = null;
 };
 
+//トリガー名からdomを抽出->実行する
 function run(trigger) {
     const array = document.getElementsByClassName(trigger);
     for (let i = 0; i < array.length; i++) {
         const element = array[i];
         if (element.nodeName == 'DIV') {
             function_run(element)
+        };
+    };
+};
+
+//引数を拾う関数
+function getargs(parent, classname) {
+    const tempArray = parent.getElementsByClassName(classname);
+    for ( let i = 0; i < tempArray.length; i++ ) {
+        if ( tempArray[i].parentNode === parent ) {
+            return tempArray[i];
         };
     };
 };
