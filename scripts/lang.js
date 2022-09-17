@@ -234,17 +234,9 @@ function keydetect(dom) {
 
         dom.parentNode.classList.add(keydetect_class);
         dom.parentNode.parentNode.classList.add(keydetect_class);
-    }
-}
+    };
+};
 
 document.onkeydown = function keypress(event) {
-    eval("run('trigger_"+event.code+"')");
-}
-
-
-
-
-let eventchange = function eventchange(dom) {
-    dom.parentNode.className = "block event css_block trigger_custom_ " + dom.textContent
-    dom.parentNode.parentNode.className = "trigger_custom_" + dom.textContent
-}
+    run('trigger_'+event.code);
+};
